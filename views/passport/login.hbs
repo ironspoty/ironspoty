@@ -1,0 +1,21 @@
+<h2>Log In</h2>
+<form action="/login" method="POST">
+  <div>
+    <label for="username">Username:</label>
+    <input type="text" name="username" required>
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" name="password" required>
+  </div>
+  <div>
+    <input type="submit" value="Log In">
+  </div>
+
+  {{!-- Direct to private page automatically --}}
+
+  {{#if message}}
+  <div class="error-message">{{ message }}</div>
+  {{/if}}
+
+</form>
