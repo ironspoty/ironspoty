@@ -35,11 +35,17 @@
         <li class="nav-item">
           <a class="nav-link" href="/login">Login</a>
         </li>
-
         {{/unless}}
 
 
         {{#if user}}
+        <li class="nav-item">
+            <a class="nav-link" href="/search">Search</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="/user">User</a>
+        </li>
         <li>
           <a class="nav-link" href="/logout">Logout</a>
         </li>
