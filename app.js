@@ -111,6 +111,8 @@ app.use((req, res, next) => {
 
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
+app.locals.spotifyCode = '';
+app.locals.spotyAccessToken = '';
 
 
 // Routes middleware goes here

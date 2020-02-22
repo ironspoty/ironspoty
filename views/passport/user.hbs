@@ -1,0 +1,13 @@
+<h1>User</h1>
+
+{{#if response.items}}
+<div style="max-width: 900px;">
+    <ul>
+        {{#each response.items}}
+        <li>
+            {{ this.track.name }}
+        </li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}

@@ -1,0 +1,42 @@
+<h1>Search</h1>
+
+<form action="/search" method="POST">
+    <input type="text" name="q">
+    <select name="type" id="type">
+        <option value="artist">Artist</option>
+        <option value="track">Track</option>
+    </select>
+    <input type="submit" value="Buscar">
+</form>
+
+{{#if response.artists}}
+<div style="max-width: 900px;">
+    <ul>
+        {{#each response.artists.items}}
+        <li>
+            <dl>
+                <dt>Name:</dt>
+                <dd>{{ this.name }}</dd>
+                <dt>Popularity:</dt>
+                <dd>{{ this.popularity }}</dd>
+                <dt>Followers:</dt>
+                <dd>{{ this.followers.total }}</dd>
+            </dl>
+            <a href="{{ this.external_urls.spotify }}" target="_blank">Open on Spotify</a>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}
+
+{{#if response.tracks}}
+<div style="max-width: 900px;">
+    <ul>
+        {{#each response.tracks.items}}
+        <li>
+            {{ this }}
+        </li>
+        {{/each}}
+    </ul>
+</div>
+{{/if}}
