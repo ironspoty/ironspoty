@@ -1,13 +1,30 @@
-<h1>User</h1>
+<h3>From your recently played artitst...</h3>
+
+{{!-- <h2>We have found that</h2> --}}
+
+
 
 {{#if response.items}}
+<canvas width="200px" height="50px" id="myChart"></canvas>
+
 <div style="max-width: 900px;">
-    <ul>
+    <ol>
         {{#each response.items}}
         <li>
+            <img width="40px" height="40px" border-radius="40px" class="image-size"
+                src={{ this.track.album.images.[0].url }} alt="Users Image">
             {{ this.track.name }}
+            {{!-- <p>Played at {{this.played_at}} </p>
+            <p>This is the artist id: {{this.track.album.artists.[0].id}}</p> --}}
         </li>
         {{/each}}
-    </ul>
+    </ol>
 </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="/javascripts/chart.js" charset="utf-8"></script>
+
+
 {{/if}}

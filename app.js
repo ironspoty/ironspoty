@@ -47,13 +47,6 @@ app.use(session({
 
 app.use(flash());
 
-//Define 3 methdods Passport needs to work. Strategy methods:
-// - Strategy - Defines strategy we are going to use
-// - Serialize & Deserialize - Helps keep the amount of data
-//   in the session as small as we need. These functions will
-//   define which data is kept in the session, and how to recover
-//   this information from the database.
-
 passport.serializeUser((user, cb) => {
   cb(null, user._id);
 });
@@ -81,9 +74,6 @@ passport.use(new LocalStrategy((username, password, next) => {
   });
 }));
 
-
-
-
 //Initialized passport and passport session as a middleware
 app.use(passport.initialize());
 app.use(passport.session());
@@ -95,7 +85,6 @@ app.use(require('node-sass-middleware')({
   dest: path.join(__dirname, 'public'),
   sourceMap: true
 }));
-
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
