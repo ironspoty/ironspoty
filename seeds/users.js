@@ -30,5 +30,9 @@ axios({
   withDbConnection(async () => {
     await dropIfExists(User);
     await User.create(response.data);
+    await User.create({
+      "username": "admin",
+      "password": hashPassword('admin')
+    });
   });
 });
