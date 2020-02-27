@@ -1,4 +1,4 @@
-const { withDbConnection, dropIfExists, hashPassword } = require("../lib/library");
+const { withDbConnection, dropIfExists, hashPassword } = require("../lib");
 
 const User = require("../models/User");
 const axios = require("axios");

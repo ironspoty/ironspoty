@@ -1,4 +1,4 @@
-const { withDbConnection, dropIfExists, getSpotityToken } = require("../lib/library");
+const { withDbConnection, dropIfExists, getSpotityToken } = require("../lib");
 const Track = require("../models/Track");
 const axios = require("axios");
 
