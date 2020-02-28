@@ -18,45 +18,28 @@
 <body>
     <!-- HEADER -->
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-success">
-            <a class="navbar-brand" href="/">Ironspoty</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <nav class="main-navbar">
+            <a class="main-navbar__logo" href="/">
+                <img src="/images/logo_ironspoty.png" width="152" alt="">
+            </a>
+            <div class="main-navbar__wrapper">
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
+                {{#if user}}
+                <a class="main-navbar__link" href="/">Home</a>
+                <a class="main-navbar__link" href="/search">Friends</a>
+                <a class="main-navbar__link" href="/user">My Profile</a>
+                <button class="main-navbar__link main-navbar__link--user-profile" href="/profile">
+                    <span>{{ user.name }}</span>
+                    <div class="avatar-wrapper">
+                        <img src="{{ user.avatar }}" width="38" alt="">
+                    </div>
+                </button>
+                {{/if}}
 
-                    {{#unless user}}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/signup">Sign Up</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Login</a>
-                    </li>
-                    {{/unless}}
-
-                    {{#if user}}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/search">Search</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/user">User</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="/logout">Logout</a>
-                    </li>
-                    {{!-- <li>
-                            <img class="image-size" src="https://i.scdn.co/image/ab6775700000ee85945fe85f37c994a23515ad35"
-                            alt="Users Image">
-                        </li> --}}
-                    {{/if}}
-                </ul>
-
+                {{#unless user}}
+                <a class="main-navbar__link" href="/signup">Sign Up</a>
+                <a class="main-navbar__link" href="/login">Login</a>
+                {{/unless}}
             </div>
         </nav>
     </header>
@@ -64,10 +47,6 @@
     <!-- MAIN CONTENT -->
     {{{body}}}
 
-    <!-- FOOTER -->
-    <footer>
-        <small>Copyright® 2020</small>
-    </footer>
 </body>
 
 </html>
