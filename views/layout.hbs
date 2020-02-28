@@ -26,8 +26,8 @@
 
                 {{#if user}}
                 <a class="main-navbar__link" href="/">Home</a>
-                <a class="main-navbar__link" href="/search">Friends</a>
-                <a class="main-navbar__link" href="/user">My Profile</a>
+                <a class="main-navbar__link" href="/friends">Friends</a>
+                <a class="main-navbar__link" href="/user-profile">My Profile</a>
                 <button class="main-navbar__link main-navbar__link--user-profile" href="/profile">
                     <span>{{ user.name }}</span>
                     <div class="avatar-wrapper">
@@ -45,7 +45,9 @@
     </header>
 
     <!-- MAIN CONTENT -->
-    {{{body}}}
+    <main class="main-content">
+        {{{body}}}
+    </main>
 
 </body>
 

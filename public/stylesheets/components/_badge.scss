@@ -1,0 +1,17 @@
+//
+//  Badge
+// --------------------------------------------------
+
+.badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    &--music {
+        background-image: linear-gradient(206deg, #F127A2 0%, #FD29A6 95%);
+        font-size: 17px;
+    }
+}
