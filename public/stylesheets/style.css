@@ -17,7 +17,7 @@ a {
   a:hover, a:focus, a:active {
     outline: 0; }
 
-.absolutely-centered, .card__img-wrapper div, .card__img {
+.absolutely-centered, .card .no-avatar span, .card__img-wrapper div, .card__img {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -191,6 +191,14 @@ a {
   border: 1px solid #3D3D3D;
   border-radius: 2px;
   margin-bottom: 35px; }
+  .card .no-avatar {
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    position: relative; }
+    .card .no-avatar span {
+      font-size: 38px;
+      font-weight: bold; }
   .card__img-wrapper {
     width: 130px;
     height: 130px;
@@ -250,8 +258,12 @@ a {
           border-right: 1px solid #3D3D3D; }
   .card--male .card__img-wrapper {
     border: 5px solid #58FFBC; }
+  .card--male .no-avatar {
+    background-color: #118977; }
   .card--female .card__img-wrapper {
     border: 5px solid #A558FF; }
+  .card--female .no-avatar {
+    background-color: #5C16AE; }
 
 .badge {
   width: 32px;

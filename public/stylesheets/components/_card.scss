@@ -11,6 +11,19 @@
     border-radius: 2px;
     margin-bottom: 35px;
 
+    .no-avatar {
+        width: 112px;
+        height: 112px;
+        border-radius: 50%;
+        position: relative;
+
+        span {
+            @extend .absolutely-centered;
+            font-size: 38px;
+            font-weight: bold;
+        }
+    }
+
     &__img-wrapper {
         width: 130px;
         height: 130px;
@@ -99,6 +112,10 @@
         .card__img-wrapper {
             border: 5px solid #58FFBC;
         }
+
+        .no-avatar {
+            background-color: #118977;
+        }
     }
 
     //
@@ -107,6 +124,10 @@
     &--female {
         .card__img-wrapper {
             border: 5px solid #A558FF;
+        }
+
+        .no-avatar {
+            background-color: #5C16AE;
         }
     }
 }

@@ -33,8 +33,8 @@ passportRouter.get("/signup", isLoggedOut(), (req, res, next) => {
     res.render("passport/signup");
 });
 
-passportRouter.get("/user-profile", (req, res, next) => {
-    res.render("passport/user-profile");
+passportRouter.get("/friends", (req, res, next) => {
+    res.render("passport/friends");
 });
 
 //Post
