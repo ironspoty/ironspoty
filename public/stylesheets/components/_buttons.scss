@@ -1,0 +1,39 @@
+//
+// Buttons
+// --------------------------------------------------
+
+.btn {
+    max-width: 325px;
+    width: 100%;
+    padding: 22px 0;
+    font: 14px 'Ubuntu', sans-serif;
+    letter-spacing: 0;
+    text-align: center;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    box-shadow: none;
+    transition: background-color .35s, color .35s;
+
+    &--primary {
+        background-color: #58FFBC;
+        color: #1B5D43;
+        font-weight: 500;
+        text-transform: uppercase;
+        box-shadow: 0 5px 7px 4px rgba(0,0,0,0.15);
+
+        &:hover {
+            background-color: #46D69D;
+        }
+
+        &:active {
+            top: 1px;
+        }
+    }
+
+    &--with-shadow {
+        box-shadow: 0 5px 7px 4px rgba(0,0,0,0.15);
+    }
+}

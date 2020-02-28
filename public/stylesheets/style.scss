@@ -1,16 +1,15 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+// Variables, Media Query & Base
+@import "config/_variables.scss";
+@import "config/_media-queries.scss";
+@import "config/_base.scss";
+@import "config/_general-classes.scss";
 
-a {
-  color: #00B7FF;
-}
+// Website Components
+@import "components/_feather-icons.scss";
+@import "components/_buttons.scss";
+@import "components/_nav.scss";
+@import "components/_form.scss";
+@import "components/_box.scss";
 
-
-.image-size{
-  width:40px;
-  height:40px;
-  border-radius: 50%;
-  
-}
+// Website Sections
+@import "layout/_layouts.scss";

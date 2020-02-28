@@ -1,0 +1,28 @@
+//
+// CSS Base
+// --------------------------------------------------
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	font: $baseFontSize $mainFont;
+    color: $baseFontColor;
+    background-color: #181818;
+}
+
+a {
+    color: $main-color;
+
+	&:hover,
+	&:focus,
+	&:active {
+		outline: 0;
+	}
+}

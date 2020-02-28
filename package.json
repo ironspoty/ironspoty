@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "DEBUG=starter-code:* nodemon ./bin/www",
+    "dev": "DEBUG=starter-code:* nodemon -e scss ./bin/www",
     "dev-windows": "nodemon ./bin/www",
     "seed-users": "node seeds/users.js",
     "seed-track": "node seeds/track.js",
