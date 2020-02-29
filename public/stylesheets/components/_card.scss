@@ -1,0 +1,240 @@
+//
+//  Card
+// --------------------------------------------------
+
+.card {
+    background: #101010;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #3D3D3D;
+    border-radius: 2px;
+    margin-bottom: 35px;
+
+    .no-avatar {
+        width: 112px;
+        height: 112px;
+        border-radius: 50%;
+        position: relative;
+
+        span {
+            @extend .absolutely-centered;
+            font-size: 38px;
+            font-weight: bold;
+        }
+    }
+
+    &__img-wrapper {
+        width: 130px;
+        height: 130px;
+        margin: 35px auto 10px;
+        border-radius: 50%;
+        position: relative;
+
+        div {
+            @extend .absolutely-centered;
+            display: block;
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .badge {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+    }
+        &__img {
+            @extend .absolutely-centered;
+        }
+
+    &__info {
+        text-align: center;
+        margin-bottom: 25px;
+
+        &__subtitle {
+            font-size: 12px;
+            font-weight: 500;
+            color: #fff;
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        &__title {
+            font-size: 22px;
+            font-weight: 500;
+            color: #58FFBC;
+            text-align: center;
+            margin-top: 0;
+        }
+        &__text {
+            font-size: 16px;
+            line-height: 24px;
+            color: #C7C7C7;
+            text-align: center;
+        }
+        &__small-title {
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: #58FFBC;
+            margin-bottom: 7px;
+        }
+        &__secondary-title {
+            font-size: 16px;
+            font-weight: 500;
+            text-transform: uppercase;
+            color: #58FFBC;
+        }
+    }
+
+    &__footer {
+        margin-top: auto;
+
+        &__button {
+            border-top: 1px solid #3D3D3D;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+
+            a {
+                font-size: 12px;
+                font-weight: 500;
+                color: #AFAFAF;
+                text-decoration: none;
+                text-transform: uppercase;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 50px;
+
+                &:first-child {
+                    border-right: 1px solid #3D3D3D;
+                }
+            }
+        }
+    }
+
+    //
+    //  Male Card
+    // -----------------------------
+    &--male {
+        .card__img-wrapper {
+            border: 5px solid #58FFBC;
+        }
+
+        .no-avatar {
+            background-color: #118977;
+        }
+    }
+
+    //
+    //  Female Card
+    // -----------------------------
+    &--female {
+        .card__img-wrapper {
+            border: 5px solid #A558FF;
+        }
+
+        .no-avatar {
+            background-color: #5C16AE;
+        }
+    }
+
+    //
+    //  Profile Card
+    // -----------------------------
+    &--profile {
+        .card__img-wrapper {
+            width: 170px;
+            height: 170px;
+            margin: 35px auto 25px;
+
+            div {
+                width: 150px;
+                height: 150px;
+            }
+
+            .badge {
+                width: 40px;
+                height: 40px;
+                right: 2px;
+                bottom: 2px;
+            }
+        }
+
+        .card__info {
+            margin-bottom: 25px;
+
+            &__title {
+                font-size: 26px;
+                color: #fff;
+            }
+
+            &__currently-playing {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 30px 0;
+                padding: 30px 0;
+                border-top: 1px solid #3D3D3D;
+                border-bottom: 1px solid #3D3D3D;
+
+                .badge {
+                    width: 36px;
+                    height: 36px;
+                    margin-right: 10px;
+                }
+
+                .card__info__subtitle {
+                    font-size: 11px;
+                    text-align: left;
+                    margin-top: 0;
+                }
+                .card__info__title {
+                    font-size: 20px;
+                    text-align: left;
+                    color: #58FFBC;
+                    margin-bottom: 0;
+                }
+            }
+
+            &__recently-played {
+                padding-bottom: 10px;
+
+                .icon-headphones {
+                    font-size: 28px;
+                }
+                ul {
+                    color: #C7C7C7;
+                    line-height: 24px;
+                    font-size: 16px;
+                }
+            }
+        }
+
+        //
+        // Male
+        //-------
+        &.card--male {
+            .card__img-wrapper {
+                border: 5px solid #58FFBC;
+                box-shadow: 0 0 8px 1px rgba(255,255,255,0.87);
+            }
+        }
+
+        //
+        // Female
+        //-------
+        &.card--female {
+            .card__img-wrapper {
+                border: 5px solid #A558FF;
+                box-shadow: 0 0 8px 1px rgba(255,255,255,0.87);
+            }
+        }
+    }
+}
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}}</title>
+
+    <!-- FONTS -->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,400i,500,700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_o5hd5vvqpoqiwwmi.css">
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav class="main-navbar">
+            <a class="main-navbar__logo" href="/">
+                <img src="/images/logo_ironspoty.png" width="152" alt="">
+            </a>
+            <div class="main-navbar__wrapper">
+
+                {{#if user}}
+                <a class="main-navbar__link" href="/">Home</a>
+                <a class="main-navbar__link" href="/friends">Friends</a>
+                <a class="main-navbar__link" href="/user-profile">My Profile</a>
+                <button class="main-navbar__link main-navbar__link--user-profile" href="/profile">
+                    <span>{{ user.name }}</span>
+                    <div class="avatar-wrapper">
+                        <img src="{{ user.avatar }}" width="38" alt="">
+                    </div>
+                </button>
+                {{/if}}
+
+                {{#unless user}}
+                <a class="main-navbar__link" href="/signup">Sign Up</a>
+                <a class="main-navbar__link" href="/login">Login</a>
+                {{/unless}}
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        {{{body}}}
+    </main>
+
+</body>
+
+</html>
