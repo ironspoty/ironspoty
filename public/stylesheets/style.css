@@ -336,98 +336,31 @@ a {
     background-image: linear-gradient(206deg, #F127A2 0%, #FD29A6 95%);
     font-size: 17px; }
 
-.tag {
-  background-color: rgba(255, 255, 255, 0.3);
-  color: #fff;
-  font-size: 12px;
-  text-transform: uppercase;
-  display: inline-block;
-  padding: 0 6px;
-  letter-spacing: 0.5px;
-  border-radius: 2px;
-  margin-bottom: 2px; }
+.image-size {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; }
 
-.post-box {
-  background-image: linear-gradient(228deg, #000 0%, #000 100%);
-  position: relative;
-  padding: 28px 22px 25px 80px;
-  margin-bottom: 60px;
-  border: 2px solid #3D3D3D;
-  border-radius: 8px;
-  transition: background-image .4s, box-shadow .4s, border-color .4s; }
-  .post-box:not(:first-child)::after {
-    content: '';
-    display: block;
-    background-color: #3D3D3D;
-    width: 2px;
-    height: 60px;
-    position: absolute;
-    top: -61px;
-    left: 50px;
-    z-index: -1; }
-  .post-box__type-icon {
-    background: #101010;
-    color: #B2B2B2;
-    width: 60px;
-    height: 60px;
-    border: 2px solid #3D3D3D;
-    border-radius: 50%;
-    position: absolute;
-    top: -30px;
-    left: 20px; }
-    .post-box__type-icon .icon {
-      font-size: 26px; }
-  .post-box__type {
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    color: #C899FF;
-    margin: 0 0 10px; }
-  .post-box__time {
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    color: #B2B2B2;
-    position: absolute;
-    top: 20px;
-    right: 20px; }
-    .post-box__time i {
-      padding-right: 5px; }
-    .post-box__time span {
-      text-transform: uppercase; }
-  .post-box:hover {
-    background-image: linear-gradient(228deg, #F027F1 0%, #FD29A6 100%);
-    box-shadow: 2px 2px 10px 2px rgba(204, 83, 83, 0.84);
-    border-color: transparent; }
-    .post-box:hover * {
-      color: #fff; }
-    .post-box:hover .post-box__type-icon {
-      background-image: linear-gradient(206deg, #F19327 0%, #FD29A6 95%);
-      box-shadow: 1px 3px 4px 0 rgba(255, 255, 255, 0.5);
-      border-color: transparent; }
+#chartSize {
+  float: right;
+  margin-right: 50px; }
 
-.music-activity__artist {
-  font-size: 16px;
-  font-weight: 500;
-  color: #58FFBC;
-  margin: 0 0 3px; }
+#myChart, #myChart2, #myChart3 {
+  width: 430px !important;
+  height: 200px !important; }
 
-.music-activity__title {
-  font-size: 24px;
-  font-weight: 500;
-  color: #EDEDED;
-  margin: 0; }
+.container {
+  border: 1px solid silver;
+  display: flex; }
 
-.post-activity {
-  color: #EDEDED;
-  font-style: italic;
-  font-size: 16px;
-  line-height: 24px; }
-  .post-activity p {
-    margin-bottom: 0; }
+.nowrap {
+  flex-wrap: wrap; }
 
-.main-content {
-  padding: 120px 45px 0 45px; }
+.flex-item {
+  width: 416px;
+  height: 568px;
+  background: grey;
+  font-size: 10px; }
 
 .card-wrapper {
   display: flex;

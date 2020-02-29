@@ -5,10 +5,14 @@
 
 
 {{#if response.items}}
-<canvas width="200px" height="50px" id="myChart"></canvas>
+<div id="chartSize">
 
-<div style="max-width: 900px;">
-    <ol>
+    <canvas id="myChart"></canvas>
+    <canvas id="myChart2"></canvas>
+    <canvas id="myChart3"></canvas>
+</div>
+<div class="container nowrap" style="max-width: 692px;">
+    <ol class="flex-item">
         {{#each response.items}}
         <li>
             <img width="40px" height="40px" border-radius="40px" class="image-size"
