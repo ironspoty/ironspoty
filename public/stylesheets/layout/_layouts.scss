@@ -1,0 +1,26 @@
+//
+//  Main Layout
+// --------------------------------------------------
+
+.main-content {
+    padding: 120px 45px 0 45px;
+}
+
+.card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.my-profile {
+    display: flex;
+
+    .profile-box {
+        margin-right: 75px;
+    }
+}
+
+.my-activities {
+    max-width: 700px;
+    width: 100%;
+}
