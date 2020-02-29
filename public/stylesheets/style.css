@@ -17,14 +17,11 @@ a {
   a:hover, a:focus, a:active {
     outline: 0; }
 
-.absolutely-centered, .card .no-avatar span, .card__img-wrapper div, .card__img {
+.absolutely-centered, .card .no-avatar span, .card__img-wrapper div, .card__img, .post-box__type-icon .icon {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%); }
-
-.main-content {
-  padding: 120px 45px 0 45px; }
 
 .unstyled-list {
   margin: 0;
@@ -233,9 +230,20 @@ a {
       margin-top: 0; }
     .card__info__text {
       font-size: 16px;
-      line-height: 22px;
+      line-height: 24px;
       color: #C7C7C7;
       text-align: center; }
+    .card__info__small-title {
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #58FFBC;
+      margin-bottom: 7px; }
+    .card__info__secondary-title {
+      font-size: 16px;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: #58FFBC; }
   .card__footer {
     margin-top: auto; }
     .card__footer__button {
@@ -264,6 +272,58 @@ a {
     border: 5px solid #A558FF; }
   .card--female .no-avatar {
     background-color: #5C16AE; }
+  .card--profile .card__img-wrapper {
+    width: 170px;
+    height: 170px;
+    margin: 35px auto 25px; }
+    .card--profile .card__img-wrapper div {
+      width: 150px;
+      height: 150px; }
+    .card--profile .card__img-wrapper .badge {
+      width: 40px;
+      height: 40px;
+      right: 2px;
+      bottom: 2px; }
+  .card--profile .card__info {
+    margin-bottom: 25px; }
+    .card--profile .card__info__title {
+      font-size: 26px;
+      color: #fff; }
+    .card--profile .card__info__currently-playing {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 30px 0;
+      padding: 30px 0;
+      border-top: 1px solid #3D3D3D;
+      border-bottom: 1px solid #3D3D3D; }
+      .card--profile .card__info__currently-playing .badge {
+        width: 36px;
+        height: 36px;
+        margin-right: 10px; }
+      .card--profile .card__info__currently-playing .card__info__subtitle {
+        font-size: 11px;
+        text-align: left;
+        margin-top: 0; }
+      .card--profile .card__info__currently-playing .card__info__title {
+        font-size: 20px;
+        text-align: left;
+        color: #58FFBC;
+        margin-bottom: 0; }
+    .card--profile .card__info__recently-played {
+      padding-bottom: 10px; }
+      .card--profile .card__info__recently-played .icon-headphones {
+        font-size: 28px; }
+      .card--profile .card__info__recently-played ul {
+        color: #C7C7C7;
+        line-height: 24px;
+        font-size: 16px; }
+  .card--profile.card--male .card__img-wrapper {
+    border: 5px solid #58FFBC;
+    box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.87); }
+  .card--profile.card--female .card__img-wrapper {
+    border: 5px solid #A558FF;
+    box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.87); }
 
 .badge {
   width: 32px;
@@ -306,5 +366,14 @@ a {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between; }
+
+.my-profile {
+  display: flex; }
+  .my-profile .profile-box {
+    margin-right: 75px; }
+
+.my-activities {
+  max-width: 700px;
+  width: 100%; }
 
 /*# sourceMappingURL=style.css.map */
