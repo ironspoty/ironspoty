@@ -1,11 +1,15 @@
 {
-  "name": "starter-code",
+  "name": "ironspoty",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "DEBUG=starter-code:* nodemon ./bin/www",
-    "dev-windows": "nodemon ./bin/www"
+    "dev": "DEBUG=starter-code:* nodemon -e scss ./bin/www",
+    "dev-windows": "nodemon ./bin/www",
+    "seed-users": "node seeds/users.js",
+    "seed-track": "node seeds/track.js",
+    "seed-genres": "node seeds/genres.js",
+    "seed-all": "node seeds/genres.js && node seeds/users.js && node seeds/tracks.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -13,6 +17,7 @@
     "body-parser": "^1.18.3",
     "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",

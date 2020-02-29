@@ -1,16 +1,22 @@
 require('dotenv').config();
 
-const { app } = require('../app');
+const { isLoggedIn, isLoggedOut } = require('../lib');
 const querystring = require('querystring');
 const axios = require('axios');
+
 const express = require("express");
 const passportRouter = express.Router();
-const User = require("../models/user");
+
+// Require user model
+const User = require("../models/User");
+
+// Add bcrypt to encrypt passwords
 const bcrypt = require("bcrypt");
 const bcryptSalt = 10;
+
+// Add passport
 const passport = require("passport");
 
-//Ensure Login
 
 // -------------------------
 // Constants
@@ -21,15 +27,18 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const SCOPES = process.env.SCOPES;
 let spotyAccessToken = '';
-const profileImage = "https://i.scdn.co/image/ab6775700000ee85945fe85f37c994a23515ad35";
 
 //Get
-passportRouter.get("/signup", (req, res, next) => {
+passportRouter.get("/signup", isLoggedOut(), (req, res, next) => {
   res.render("passport/signup");
 });
 
+passportRouter.get("/friends", (req, res, next) => {
+  res.render("passport/friends");
+});
+
 //Post
-passportRouter.post("/signup", (req, res, next) => {
+passportRouter.post("/signup", isLoggedOut(), (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -69,8 +78,10 @@ passportRouter.post("/signup", (req, res, next) => {
     })
 });
 
+
 //LOG IN
-passportRouter.get("/login", (req, res, next) => {
+
+passportRouter.get("/login", isLoggedOut(), (req, res, next) => {
   res.render("passport/login");
 });
 
@@ -82,7 +93,7 @@ passportRouter.post("/login", passport.authenticate("local", {
 }));
 
 //LOG OUT
-passportRouter.get("/logout", (req, res, next) => {
+passportRouter.get("/logout", isLoggedIn(), (req, res, next) => {
   req.logout();
   res.redirect("/");
 });
@@ -138,26 +149,16 @@ passportRouter.get('/user', ensureLogin.ensureLoggedIn(), (req, res, next) => {
     // url: `https://api.spotify.com/v1/me`,
     // url: `https://api.spotify.com/v1/users/${12165690444}`,
     // url: 'https://api.spotify.com/v1/me/top/tracks',
-    // url: 'https://api.spotify.com/v1/me/player/currently-playing',
-    url: 'https://api.spotify.com/v1/me/player/recently-played',
-    //url: 'https://api.spotify.com/v1/tracks/3VGHgcoqPm2vdllXXufQjh',
-    //url: `https://api.spotify.com/v1/audio-features/3VGHgcoqPm2vdllXXufQjh`,
+    url: 'https://api.spotify.com/v1/me/player/currently-playing',
+    // url: 'https://api.spotify.com/v1/me/player/recently-played',
+    // url: `https://api.spotify.com/v1/audio-features/3VGHgcoqPm2vdllXXufQjh`,
     headers: {
       'Authorization': `Bearer ${spotyAccessToken}`
     },
     responseType: 'json'
   }).then(response => {
     //res.render('user', { response: response.data})
-    //res.json(response.data.images[0].url); // 1. Gets url of the users profile image using `https://api.spotify.com/v1/me`
-    //res.render("passport/user", { profileImage });
-
-
-    //DEVUELVE ULTIMAS 20 CANCIONES CON SU FOTO, ID 
-    // printChart(response.data);
-    res.render('passport/user', { response: response.data });
-
-
-    //res.json(response.data);
+    res.json(response.data);
   }).catch(e => {
     console.log(`
             =======================================
@@ -261,7 +262,6 @@ passportRouter.post('/search', (req, res, next) => {
     },
     responseType: 'json'
   }).then(response => {
-    console.log("CARLOS", response.data)
     res.render('passport/search', { response: response.data });
   }).catch(e => {
     console.log(`
