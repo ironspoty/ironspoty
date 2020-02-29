@@ -14,12 +14,15 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const User = require("./models/user")
-const flash = require("connect-flash")
-
+const User = require("./models/User");
+const flash = require("connect-flash");
+const DBURL = process.env.DBURL;
 
 mongoose
-  .connect('mongodb://localhost/Ironspoty', { useNewUrlParser: true })
+  .connect(DBURL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
