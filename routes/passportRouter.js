@@ -183,14 +183,35 @@ passportRouter.get('/userData', ensureLogin.ensureLoggedIn(), (req, res, next) =
     },
     responseType: 'json'
   }).then(response => {
-    //res.render('user', { response: response.data})
+    //res.render('user', { response: response.data })
     //res.json(response.data.images[0].url); // 1. Gets url of the users profile image using `https://api.spotify.com/v1/me`
     //res.render("passport/user", { profileImage });
 
+    //Chart de Barras
+    //res.json({ data: response.data })
+    //console.log("Devuelve todo el objeto json, response.data)
+    getTrackNames(response.data)
+    //Llama función get Id:
+    const ids = getIds(response.data);
 
-    //DEVUELVE ULTIMAS 20 CANCIONES CON SU FOTO, ID 
-    res.json({ data: response.data })
+    Promise.all(ids.map(id => axios({
+      method: 'get',
+      url: `https://api.spotify.com/v1/audio-features/${id}`,
+      headers: {
+        'Authorization': `Bearer ${spotyAccessToken}`
+      },
+      responseType: 'json'
+    })))
+      .then(values => { //Retorna array de objetos
+        let dance = [[], [], []]
 
+        values.forEach((e) => dance[0].push(e.data.danceability))
+        values.forEach((e) => dance[1].push(e.data.energy))
+        values.forEach((e) => dance[2].push(e.data.tempo))
+        console.log("This is the dance array", dance)
+
+        res.json({ data: dance })
+      })
 
     //res.json(response.data);
   }).catch(e => {
@@ -203,6 +224,24 @@ passportRouter.get('/userData', ensureLogin.ensureLoggedIn(), (req, res, next) =
   })
 })
 
+function getIds(info) {
+
+  let tracksID = []
+
+  let trackID = info.items;
+  // trackID.forEach((e) => console.log("This is the id of song", e.track.id))
+  trackID.forEach((e) => tracksID.push(e.track.id))
+
+  console.log(" Este es el array con todos los IDS", tracksID)
+
+  return tracksID;
+}
+
+function getTrackNames(pajaros) {
+
+  console.log("Array de objetos", pajaros.items)
+
+}
 
 
 passportRouter.get('/search', ensureLogin.ensureLoggedIn(), (req, res, next) => {

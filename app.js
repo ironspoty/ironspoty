@@ -20,6 +20,7 @@ const flash = require("connect-flash")
 
 mongoose
   .connect('mongodb://localhost/Ironspoty', { useNewUrlParser: true })
+  //.connect('mongodb+srv://IgnacioGB1990:Colunga1234@cluster0-c7fht.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true })
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })

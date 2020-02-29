@@ -10,4 +10,25 @@ a {
   height: 40px;
   border-radius: 50%; }
 
+#chartSize {
+  float: right;
+  margin-right: 50px; }
+
+#myChart, #myChart2, #myChart3 {
+  width: 430px !important;
+  height: 200px !important; }
+
+.container {
+  border: 1px solid silver;
+  display: flex; }
+
+.nowrap {
+  flex-wrap: wrap; }
+
+.flex-item {
+  width: 416px;
+  height: 568px;
+  background: grey;
+  font-size: 10px; }
+
 /*# sourceMappingURL=style.css.map */
