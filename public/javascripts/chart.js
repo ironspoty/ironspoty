@@ -1,38 +1,98 @@
-axios.get('/userData').then(response => {
+axios.get('/userData').then(values => {
 
-  console.log("Access of general array", response.data.data.items);
-  console.log("Primer Track", response.data.data.items[0].track.album.artists[0].id);
-
-  let arrayTracks = response.data.items;
-  console.log("Este es un array de tracks???", arrayTracks)
-  //arrayTracks.forEach((e) => console.log(e))
+  // arrayTracks.forEach((e) => console.log("This is the id of song", e.track.id))
 
 
-  const parameters = [0, 1, 2, 3, 4, 5, 6, 7]
+  console.log("Array de 3 dimensiones con danceability, energy y tempo ", values.data.data)
+  let data = values.data.data;
+  let dataDance = values.data.data[0].reverse();
+  let dataEnergy = values.data.data[1].reverse();
+  let dataTempo = values.data.data[2].reverse();
+  let long = data[0].length; //Cogemos la longitud del primer elemento del array
+
+
+
+
+  console.log("Esta es la longitud", long)
+
+  let arr = [],
+    x = long;
+
+  for (let i = 0; i < x; i++) {
+    arr.push("*");
+  }
+
+
+
+  console.log("Array con eje x", arr)
+
   const ctx = document.getElementById('myChart').getContext('2d');
   const myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: arr,
       datasets: [{
-        label: '# of Votes',
-        data: [0, 1, 2, 3, 4, 5, 6, 7],
+        label: 'Danceability 🕺🏿',
+        data: dataDance,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
+          'rgba(255, 159, 64, 0.8)'
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
+
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+
+  const ctx2 = document.getElementById('myChart2').getContext('2d');
+  const myChart2 = new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: arr,
+      datasets: [{
+        label: 'Energy ⚡️',
+        data: dataEnergy,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.8)'
         ],
+
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+
+  const ctx3 = document.getElementById('myChart3').getContext('2d');
+  const myChart3 = new Chart(ctx3, {
+    type: 'line',
+    data: {
+      labels: arr,
+      datasets: [{
+        label: 'Tempo 🥁',
+        fontColor: 'rgba(54, 162, 235)',
+        data: dataTempo,
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.8)'
+        ],
+
         borderWidth: 1
       }]
     },

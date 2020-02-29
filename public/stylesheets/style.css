@@ -276,6 +276,32 @@ a {
     background-image: linear-gradient(206deg, #F127A2 0%, #FD29A6 95%);
     font-size: 17px; }
 
+.image-size {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; }
+
+#chartSize {
+  float: right;
+  margin-right: 50px; }
+
+#myChart, #myChart2, #myChart3 {
+  width: 430px !important;
+  height: 200px !important; }
+
+.container {
+  border: 1px solid silver;
+  display: flex; }
+
+.nowrap {
+  flex-wrap: wrap; }
+
+.flex-item {
+  width: 416px;
+  height: 568px;
+  background: grey;
+  font-size: 10px; }
+
 .card-wrapper {
   display: flex;
   flex-wrap: wrap;
