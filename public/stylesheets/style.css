@@ -526,6 +526,13 @@ a {
   background: grey;
   font-size: 10px; }
 
+#map {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0; }
+
 .main-content {
   padding: 120px 45px 0 45px; }
 
