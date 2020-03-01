@@ -1,2 +1,2 @@
 # ironspoty
-Ironhack's 2nd module final project
+Meet new people while listening to your favorite music!
