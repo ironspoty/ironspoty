@@ -3,7 +3,8 @@
 // --------------------------------------------------
 
 .main-navbar {
-    background: rgba(0,0,0,0.40);
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(2px);
     width: 100%;
     height: 70px;
     padding-left: 45px;
@@ -37,7 +38,7 @@
             align-items: center;
             text-transform: uppercase;
             text-decoration: none;
-            transition: color .4s;
+            // transition: color .4s;
 
             &:hover {
                 color: #58FFBC;

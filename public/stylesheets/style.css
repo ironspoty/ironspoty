@@ -17,7 +17,7 @@ a {
   a:hover, a:focus, a:active {
     outline: 0; }
 
-.absolutely-centered, .card .no-avatar span, .card__img-wrapper div, .card__img, .post-box__type-icon .icon {
+.absolutely-centered, .card .no-avatar span, .card__img-wrapper div, .card__img, .card--horizontal .no-avatar span, .card--horizontal .card__img-wrapper div, .card--horizontal .card__img, .post-box__type-icon .icon {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -27,6 +27,12 @@ a {
   margin: 0;
   padding: 0;
   list-style: none; }
+
+.truncate-text {
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap; }
 
 .icon {
   /* use !important to prevent issues with browser extensions that change fonts */
@@ -69,7 +75,8 @@ a {
     box-shadow: 0 5px 7px 4px rgba(0, 0, 0, 0.15); }
 
 .main-navbar {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(2px);
   width: 100%;
   height: 70px;
   padding-left: 45px;
@@ -98,8 +105,7 @@ a {
     display: flex;
     align-items: center;
     text-transform: uppercase;
-    text-decoration: none;
-    transition: color .4s; }
+    text-decoration: none; }
     .main-navbar__link:hover {
       color: #58FFBC; }
     .main-navbar__link--user-profile {
@@ -215,6 +221,9 @@ a {
   .card__info {
     text-align: center;
     margin-bottom: 25px; }
+    .card__info .tag-wrapper {
+      padding-left: 20px;
+      padding-right: 20px; }
     .card__info__subtitle {
       font-size: 12px;
       font-weight: 500;
@@ -244,6 +253,14 @@ a {
       font-weight: 500;
       text-transform: uppercase;
       color: #58FFBC; }
+    .card__info__recently-played {
+      padding: 0 20px 10px 20px; }
+      .card__info__recently-played .icon-headphones {
+        font-size: 28px; }
+      .card__info__recently-played ul {
+        color: #C7C7C7;
+        line-height: 24px;
+        font-size: 16px; }
   .card__footer {
     margin-top: auto; }
     .card__footer__button {
@@ -301,6 +318,8 @@ a {
         width: 36px;
         height: 36px;
         margin-right: 10px; }
+      .card--profile .card__info__currently-playing div {
+        width: 180px; }
       .card--profile .card__info__currently-playing .card__info__subtitle {
         font-size: 11px;
         text-align: left;
@@ -310,22 +329,69 @@ a {
         text-align: left;
         color: #58FFBC;
         margin-bottom: 0; }
-    .card--profile .card__info__recently-played {
-      padding-bottom: 10px; }
-      .card--profile .card__info__recently-played .icon-headphones {
-        font-size: 28px; }
-      .card--profile .card__info__recently-played ul {
-        color: #C7C7C7;
-        line-height: 24px;
-        font-size: 16px; }
   .card--profile.card--male .card__img-wrapper {
     border: 5px solid #58FFBC;
     box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.87); }
   .card--profile.card--female .card__img-wrapper {
     border: 5px solid #A558FF;
     box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.87); }
+  .card--horizontal {
+    width: 416px;
+    padding: 22px;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px; }
+    .card--horizontal .no-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      position: relative; }
+      .card--horizontal .no-avatar span {
+        font-size: 24px;
+        font-weight: bold; }
+    .card--horizontal .card__img-holder {
+      flex: 0 1 28%; }
+    .card--horizontal .card__img-wrapper {
+      width: 82px;
+      height: 82px;
+      margin: 0;
+      border-radius: 50%;
+      position: relative; }
+      .card--horizontal .card__img-wrapper div {
+        display: block;
+        width: 62px;
+        height: 62px;
+        border-radius: 50%;
+        overflow: hidden; }
+      .card--horizontal .card__img-wrapper .badge {
+        position: absolute;
+        right: 0;
+        bottom: 0; }
+    .card--horizontal .card__info {
+      flex: 0 1 57%;
+      text-align: left;
+      margin-bottom: 0; }
+      .card--horizontal .card__info__title {
+        text-align: left;
+        margin-bottom: 5px;
+        font-size: 23px;
+        color: #fff; }
+      .card--horizontal .card__info .tag-wrapper {
+        padding-left: 0;
+        padding-right: 0; }
+    .card--horizontal .card__status {
+      flex: 0 1 15%;
+      text-align: center; }
+      .card--horizontal .card__status .badge.badge--music {
+        width: 40px;
+        height: 40px; }
+        .card--horizontal .card__status .badge.badge--music .icon {
+          font-size: 20px; }
+  .card--friend .card__info {
+    padding: 0 25px; }
 
 .badge {
+  background-color: #777;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -335,6 +401,11 @@ a {
   .badge--music {
     background-image: linear-gradient(206deg, #F127A2 0%, #FD29A6 95%);
     font-size: 17px; }
+  .badge--offline {
+    width: 48px;
+    height: 48px;
+    font-size: 19px;
+    opacity: .7; }
 
 .tag {
   background-color: rgba(255, 255, 255, 0.3);
@@ -346,6 +417,9 @@ a {
   letter-spacing: 0.5px;
   border-radius: 2px;
   margin-bottom: 2px; }
+  .tag--small {
+    font-size: 10px;
+    padding: 2px 4px; }
 
 .post-box {
   background-image: linear-gradient(228deg, #000 0%, #000 100%);
