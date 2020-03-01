@@ -3,7 +3,7 @@ Meet new people based on your favorite music thanks to Spotify!
 
 
 # Log in
-Go to  https://ironspoty.herokuapp.com and create an account. 
+Go to  https://ironspoty.herokuapp.com and create an account.
 You will also be prompted to log in to your spotify account.
 
 

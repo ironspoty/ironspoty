@@ -19,7 +19,7 @@ axios.get('/userData').then(values => {
     x = long;
 
   for (let i = 0; i < x; i++) {
-    arr.push("*");
+    arr.push(" ");
   }
 
 
@@ -32,7 +32,7 @@ axios.get('/userData').then(values => {
     data: {
       labels: arr,
       datasets: [{
-        label: 'Danceability 🕺🏿',
+        label: '💃',
         data: dataDance,
         backgroundColor: [
           'rgba(255, 159, 64, 0.8)'
@@ -59,7 +59,7 @@ axios.get('/userData').then(values => {
     data: {
       labels: arr,
       datasets: [{
-        label: 'Energy ⚡️',
+        label: '⚡️',
         data: dataEnergy,
         backgroundColor: [
           'rgba(255, 99, 132, 0.8)'
@@ -86,7 +86,7 @@ axios.get('/userData').then(values => {
     data: {
       labels: arr,
       datasets: [{
-        label: 'Tempo 🥁',
+        label: '🥁',
         fontColor: 'rgba(54, 162, 235)',
         data: dataTempo,
         backgroundColor: [

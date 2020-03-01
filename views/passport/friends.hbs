@@ -1,326 +1,38 @@
 <div class="card-wrapper">
-    <article class="card card--male">
+    {{#each friends}}
+    <article class="card card--friend card--{{this.gender}}">
         <div class="card__img-wrapper">
+            {{#unless this.avatar}}
             <div class="no-avatar">
-                <span>AL</span>
+                <span>{{this.initials}}</span>
             </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--male">
-        <div class="card__img-wrapper">
+            {{/unless}}
+            {{#if this.avatar}}
             <div>
-                <img class="card__img" src="https://randomuser.me/api/portraits/men/41.jpg" width="112" alt="">
+                <img class="card__img" src="{{this.avatar}}" width="150" alt="">
             </div>
+            {{/if}}
             <span class="badge badge--music">
                 <i class="icon icon-music"></i>
             </span>
         </div>
         <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
+            <h3 class="card__info__subtitle truncate-text">{{this.currentlyPlaying.artists}}</h3>
+            <h2 class="card__info__title truncate-text">{{this.currentlyPlaying.name}}</h2>
             <div class="card__info__text">
                 <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
+                    {{#each this.recentlyPlayed}}
+                    <li class="truncate-text">{{this.name}}</li>
+                    {{/each}}
                 </ul>
             </div>
         </div>
         <div class="card__footer">
             <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
+                <a href="/unmatch/{{this._id}}">Unmatch</a>
+                <a href="/user-profile/{{this._id}}">View Profile</a>
             </div>
         </div>
     </article>
-    <article class="card card--female">
-        <div class="card__img-wrapper">
-            <div class="no-avatar">
-                <span>ME</span>
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--male">
-        <div class="card__img-wrapper">
-            <div>
-                <img class="card__img" src="https://randomuser.me/api/portraits/men/41.jpg" width="112" alt="">
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--male">
-        <div class="card__img-wrapper">
-            <div>
-                <img class="card__img" src="https://randomuser.me/api/portraits/men/41.jpg" width="112" alt="">
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--female">
-        <div class="card__img-wrapper">
-            <div class="no-avatar">
-                <span>AB</span>
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--female">
-        <div class="card__img-wrapper">
-            <div class="no-avatar">
-                <span>BP</span>
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--male">
-        <div class="card__img-wrapper">
-            <div>
-                <img class="card__img" src="https://randomuser.me/api/portraits/men/41.jpg" width="112" alt="">
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--male">
-        <div class="card__img-wrapper">
-            <div>
-                <img class="card__img" src="https://randomuser.me/api/portraits/men/41.jpg" width="112" alt="">
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--female">
-        <div class="card__img-wrapper">
-            <div class="no-avatar">
-                <span>MF</span>
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--male">
-        <div class="card__img-wrapper">
-            <div>
-                <img class="card__img" src="https://randomuser.me/api/portraits/men/41.jpg" width="112" alt="">
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
-    <article class="card card--male">
-        <div class="card__img-wrapper">
-            <div>
-                <img class="card__img" src="https://randomuser.me/api/portraits/men/41.jpg" width="112" alt="">
-            </div>
-            <span class="badge badge--music">
-                <i class="icon icon-music"></i>
-            </span>
-        </div>
-        <div class="card__info">
-            <h3 class="card__info__subtitle">Jonas Blue, JP Cooper</h3>
-            <h2 class="card__info__title">Perfect Strangers</h2>
-            <div class="card__info__text">
-                <ul class="unstyled-list">
-                    <li>Señorita</li>
-                    <li>Blinding Lights</li>
-                    <li>Sugar</li>
-                </ul>
-            </div>
-        </div>
-        <div class="card__footer">
-            <div class="card__footer__button">
-                <a href="">Unmatch</a>
-                <a href="">View Profile</a>
-            </div>
-        </div>
-    </article>
+    {{/each}}
 </div>
