@@ -12,7 +12,7 @@ We are using Spotify´s API.
 
 Thanks to it we can access the 20 last songs you played. Feel like partying, happy and excited? Don´t worry we arleady know how you feel!
 
-Once we have accessed your current played songs we can predict your behaviour with an interesting audio feautre for every track: danceability, energy and tempo.
+Once we have accessed your current played songs we can predict your behaviour with an interesting audio feautre for every track: DANCEABILITY, ENERGY and TEMPO.
 
 <img width="767" alt="Captura de pantalla 2020-03-01 a las 11 12 26" src="https://user-images.githubusercontent.com/55360078/75623773-e8b70600-5bad-11ea-8054-74858cd44f76.png">
 
