@@ -54,6 +54,11 @@
         text-align: center;
         margin-bottom: 25px;
 
+        .tag-wrapper {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
         &__subtitle {
             font-size: 12px;
             font-weight: 500;
@@ -87,6 +92,18 @@
             font-weight: 500;
             text-transform: uppercase;
             color: #58FFBC;
+        }
+        &__recently-played {
+            padding: 0 20px 10px 20px;
+
+            .icon-headphones {
+                font-size: 28px;
+            }
+            ul {
+                color: #C7C7C7;
+                line-height: 24px;
+                font-size: 16px;
+            }
         }
     }
 
@@ -189,30 +206,20 @@
                     margin-right: 10px;
                 }
 
-                .card__info__subtitle {
-                    font-size: 11px;
-                    text-align: left;
-                    margin-top: 0;
+                div {
+                    width: 180px;
                 }
-                .card__info__title {
-                    font-size: 20px;
-                    text-align: left;
-                    color: #58FFBC;
-                    margin-bottom: 0;
-                }
-            }
-
-            &__recently-played {
-                padding-bottom: 10px;
-
-                .icon-headphones {
-                    font-size: 28px;
-                }
-                ul {
-                    color: #C7C7C7;
-                    line-height: 24px;
-                    font-size: 16px;
-                }
+                    .card__info__subtitle {
+                        font-size: 11px;
+                        text-align: left;
+                        margin-top: 0;
+                    }
+                    .card__info__title {
+                        font-size: 20px;
+                        text-align: left;
+                        color: #58FFBC;
+                        margin-bottom: 0;
+                    }
             }
         }
 
@@ -234,6 +241,96 @@
                 border: 5px solid #A558FF;
                 box-shadow: 0 0 8px 1px rgba(255,255,255,0.87);
             }
+        }
+    }
+
+    //
+    //  Horizontal Card
+    // -----------------------------
+    &--horizontal {
+        width: 416px;
+        padding: 22px;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .no-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            position: relative;
+
+            span {
+                @extend .absolutely-centered;
+                font-size: 24px;
+                font-weight: bold;
+            }
+        }
+
+        .card__img-holder {
+            flex: 0 1 28%;
+        }
+            .card__img-wrapper {
+                width: 82px;
+                height: 82px;
+                margin: 0;
+                border-radius: 50%;
+                position: relative;
+
+                div {
+                    @extend .absolutely-centered;
+                    display: block;
+                    width: 62px;
+                    height: 62px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                }
+
+                .badge {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                }
+            }
+                .card__img {
+                    @extend .absolutely-centered;
+                }
+
+        .card__info {
+            flex: 0 1 57%;
+            text-align: left;
+            margin-bottom: 0;
+
+            &__title {
+                text-align: left;
+                margin-bottom: 5px;
+                font-size: 23px;
+                color: #fff;
+            }
+            .tag-wrapper {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+
+        .card__status {
+            flex: 0 1 15%;
+            text-align: center;
+
+            .badge.badge--music {
+                width: 40px;
+                height: 40px;
+
+                .icon {
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+
+    &--friend {
+        .card__info {
+            padding: 0 25px;
         }
     }
 }

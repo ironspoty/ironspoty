@@ -14,3 +14,10 @@
     padding: 0;
     list-style: none;
 }
+
+.truncate-text {
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+}
