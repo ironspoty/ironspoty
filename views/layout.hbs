@@ -11,12 +11,12 @@
     <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,400i,500,700&display=swap" rel="stylesheet">
 
     <!-- CSS -->
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css" />
     <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_o5hd5vvqpoqiwwmi.css">
     <link rel="stylesheet" href="/stylesheets/style.css" />
 
     <!-- MAP -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css' rel='stylesheet' />
 </head>
 
 <body>
@@ -30,17 +30,16 @@
 
                 {{#if user}}
                 <a class="main-navbar__link" href="/map">Map</a>
-                <a class="main-navbar__link" href="/">Home</a>
                 <a class="main-navbar__link" href="/friends">Friends</a>
-                <a class="main-navbar__link" href="/user-profile">My Profile</a>
+                <a class="main-navbar__link" href="/profile">My Profile</a>
                 <a class="main-navbar__link" href="/logout">Log out</a>
 
-                <button class="main-navbar__link main-navbar__link--user-profile" href="/profile">
+                <a class="main-navbar__link main-navbar__link--user-profile" href="/preferences">
                     <span>{{ user.name }}</span>
                     <div class="avatar-wrapper">
                         <img src="{{ user.avatar }}" width="38" alt="">
                     </div>
-                </button>
+                </a>
                 {{/if}}
 
                 {{#unless user}}
@@ -55,7 +54,6 @@
     <main class="main-content">
         {{{body}}}
     </main>
-
 </body>
 
 </html>

@@ -1,0 +1,66 @@
+//
+//  Modals
+// --------------------------------------------------
+
+.modal {
+    @extend .absolutely-centered;
+    position: fixed;
+    left: calc(50% - 232px);
+    width: 100%;
+    background: #212223;
+    box-shadow: 0 2px 20px 20px rgba(0,0,0,0.23);
+    padding: 50px 30px 30px 30px;
+    border-radius: 4px;
+
+    &__title {
+        font-size: 62px;
+        position: absolute;
+        top: -45px;
+        margin-top: 0;
+    }
+
+    &__close-button {
+        background: none;
+        border: none;
+        outline: none;
+        position: absolute;
+        top: 20px;
+        right: 15px;
+
+        i {
+            font-size: 22px;
+            color: #fff;
+        }
+    }
+
+    &--sm {
+        max-width: 680px;
+    }
+
+    &--befriend {
+        &__cards-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+
+            .card {
+                margin-bottom: 20px;
+            }
+        }
+
+        &__icon-wrapper {
+            display: flex;
+            flex-direction: column;
+
+            .icon {
+                font-size: 35px;
+            }
+        }
+
+        &__button {
+            flex: 1 0 100%;
+            max-width: 100%;
+        }
+    }
+}

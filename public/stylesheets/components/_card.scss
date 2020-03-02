@@ -59,6 +59,11 @@
             padding-right: 20px;
         }
 
+        .btn--befriend {
+            position: relative;
+            top: -10px;
+        }
+
         &__subtitle {
             font-size: 12px;
             font-weight: 500;
@@ -207,7 +212,7 @@
                 }
 
                 div {
-                    width: 180px;
+                    max-width: 180px;
                 }
                     .card__info__subtitle {
                         font-size: 11px;
@@ -297,7 +302,7 @@
                 }
 
         .card__info {
-            flex: 0 1 57%;
+            flex: 0 1 56%;
             text-align: left;
             margin-bottom: 0;
 
@@ -305,8 +310,17 @@
                 text-align: left;
                 margin-bottom: 5px;
                 font-size: 23px;
-                color: #fff;
+
+                a {
+                    color: #fff;
+                    text-decoration: none;
+
+                    &:hover {
+                        color: #99f1ce;
+                    }
+                }
             }
+
             .tag-wrapper {
                 padding-left: 0;
                 padding-right: 0;
@@ -315,7 +329,7 @@
 
         .card__status {
             flex: 0 1 15%;
-            text-align: center;
+            text-align: right;
 
             .badge.badge--music {
                 width: 40px;
@@ -331,6 +345,21 @@
     &--friend {
         .card__info {
             padding: 0 25px;
+        }
+    }
+
+    //
+    //  Mapbox Card
+    // -----------------------------
+    &--map-bubble {
+        background: transparent;
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 0;
+
+        .card__img-wrapper {
+            margin: 0;
         }
     }
 }

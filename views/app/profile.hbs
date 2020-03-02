@@ -1,0 +1,250 @@
+<div class="my-profile">
+    <section class="profile-box">
+        <article class="card card--male card--profile">
+            <div class="card__img-wrapper">
+                {{#if userData.avatar}}
+                <div>
+                    <img class="card__img" src="{{ userData.avatar }}" width="150" alt="">
+                </div>
+                {{/if}}
+                {{#unless userData.avatar}}
+                <div class="no-avatar">
+                    <span>{{this.initials}}</span>
+                </div>
+                {{/unless}}
+                <span class="badge badge--music">
+                    <i class="icon icon-music"></i>
+                </span>
+            </div>
+            <div class="card__info">
+                <h2 class="card__info__title">{{ userData.fullname }}</h2>
+                {{#unless userData.cantBeFriended }}
+                <a class="btn btn--secondary btn--sm btn--befriend" href="/befriend/{{userData.id}}">
+                    <i class="icon icon-user-plus"></i>
+                    <span>Add to Friends</span>
+                </a>
+                {{/unless}}
+                <section class="card__info__text">
+                    <h3 class="card__info__small-title">Favourite genres</h3>
+                    <div class="tag-wrapper">
+                        {{#each userData.favoriteGenres}}
+                        <span class="tag">{{this.name}}</span>
+                        {{/each}}
+                    </div>
+                </section>
+                <section class="card__info__currently-playing">
+                    {{#if userData.currentlyPlaying}}
+                    <span class="badge badge--music">
+                        <i class="icon icon-music"></i>
+                    </span>
+                    <div>
+                        <h3 class="card__info__subtitle truncate-text">{{userData.currentlyPlaying.artists}}</h3>
+                        <h2 class="card__info__title truncate-text">{{userData.currentlyPlaying.name}}</h2>
+                    </div>
+                    {{/if}}
+                    {{#unless userData.currentlyPlaying}}
+                    <span class="badge badge--offline">
+                        <i class="icon icon-music"></i>
+                    </span>
+                    {{/unless}}
+                </section>
+                <section class="card__info__recently-played">
+                    <i class="icon icon-headphones"></i>
+                    <h3 class="card__info__secondary-title">Recently Played</h3>
+                    <ul class="unstyled-list">
+                        {{#each userData.recentlyPlayed}}
+                        <li class="truncate-text">{{this.name}}</li>
+                        {{/each}}
+                    </ul>
+                </section>
+            </div>
+        </article>
+    </section>
+
+    <section class="my-activities">
+        {{#if userData.notMe}}
+        <div class="box box--new-post">
+            <form method="post" action="/new-post">
+                <textarea class="box--new-post__textarea" name="post_body" rows="3" placeholder="Write a new post..."></textarea>
+                <div class="box--new-post__footer">
+                    <label class="switch">
+                        <input name="post_is_public" type="checkbox" checked>
+                        <span>Keep it public</span>
+                    </label>
+                    <input class="btn btn--primary btn--box--new-post" type="submit" value="POST">
+                </div>
+            </form>
+        </div>
+        {{/if}}
+        {{#if userData.posts}}
+        {{#each userData.posts}}
+        <article class="post-box">
+            <div class="post-box__type-icon">
+                <i class="icon icon-align-left"></i>
+            </div>
+            <h4 class="post-box__type">Post</h4>
+            <time class="post-box__time">
+                <i class="icon icon-clock"></i>
+                <span>{{ moment this.date}}</span>
+            </time>
+            <div class="post-box__body">
+                <div class="post-activity">
+                    {{ this.body }}
+                </div>
+            </div>
+        </article>
+        {{/each}}
+        {{/if}}
+        {{!-- <article class="post-box">
+            <div class="post-box__type-icon">
+                <i class="icon icon-headphones"></i>
+            </div>
+            <h4 class="post-box__type">Music</h4>
+            <time class="post-box__time">
+                <i class="icon icon-clock"></i>
+                <span>6 days ago</span>
+            </time>
+            <div class="post-box__body">
+                <div class="music-activity">
+                    <h3 class="music-activity__artist">Austin</h3>
+                    <h2 class="music-activity__title">In Betweenin’</h2>
+                </div>
+            </div>
+        </article> --}}
+    </section>
+
+
+    <section class="profile-charts">
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Danceability</h3>
+            <canvas id="danceabilityChart" class="chart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Energy</h3>
+            <canvas id="energyChart" class="chart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Tempo</h3>
+            <canvas id="tempoChart" class="chart"></canvas>
+        </div>
+    </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+    axios.get(`/chartData?id={{userData.id}}`).then(values => {
+
+        // arrayTracks.forEach((e) => console.log("This is the id of song", e.track.id))
+
+        console.log("Array de 3 dimensiones con danceability, energy y tempo ", values.data.data)
+        let data = values.data.data;
+        let dataDance = values.data.data[0].reverse();
+        let dataEnergy = values.data.data[1].reverse();
+        let dataTempo = values.data.data[2].reverse();
+        let long = data[0].length; //Cogemos la longitud del primer elemento del array
+
+        console.log("Esta es la longitud", long)
+
+        let arr = [],
+            x = long;
+
+        for (let i = 0; i < x; i++) {
+            arr.push(" ");
+        }
+
+        console.log("Array con eje x", arr)
+
+        const ctx = document.getElementById('danceabilityChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: arr,
+                datasets: [{
+                    label: '',
+                    data: dataDance,
+                    backgroundColor: [
+                        'rgba(88, 255, 168, .2)'
+                    ],
+                    borderColor: 'rgba(88, 255, 168, 1)',
+                    borderCapStyle: 'round',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('energyChart').getContext('2d');
+        const myChart2 = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: arr,
+                datasets: [{
+                    label: '',
+                    data: dataEnergy,
+                    backgroundColor: [
+                        'rgba(165, 88, 255, .2)'
+                    ],
+                    borderColor: 'rgba(165, 88, 255, 1)',
+                    borderCapStyle: 'round',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        const ctx3 = document.getElementById('tempoChart').getContext('2d');
+        const myChart3 = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: arr,
+                datasets: [{
+                    label: '',
+                    fontColor: 'rgba(54, 162, 235)',
+                    data: dataTempo,
+                    backgroundColor: [
+                        'rgba(241, 39, 162, .2)'
+                    ],
+                    borderColor: 'rgba(241, 39, 162, 1)',
+                    borderCapStyle: 'round',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    })
+</script>
