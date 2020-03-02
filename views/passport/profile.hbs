@@ -2,18 +2,28 @@
     <section class="profile-box">
         <article class="card card--male card--profile">
             <div class="card__img-wrapper">
+                {{#if userData.avatar}}
                 <div>
                     <img class="card__img" src="{{ userData.avatar }}" width="150" alt="">
                 </div>
-                {{!-- <div class="no-avatar">
-                    <span>JW</span>
-                </div> --}}
+                {{/if}}
+                {{#unless userData.avatar}}
+                <div class="no-avatar">
+                    <span>{{this.initials}}</span>
+                </div>
+                {{/unless}}
                 <span class="badge badge--music">
                     <i class="icon icon-music"></i>
                 </span>
             </div>
             <div class="card__info">
                 <h2 class="card__info__title">{{ userData.fullname }}</h2>
+                {{#unless userData.cantBeFriended }}
+                <a class="btn btn--secondary btn--sm btn--befriend" href="/befriend/{{userData.id}}">
+                    <i class="icon icon-user-plus"></i>
+                    <span>Add to Friends</span>
+                </a>
+                {{/unless}}
                 <section class="card__info__text">
                     <h3 class="card__info__small-title">Favourite genres</h3>
                     <div class="tag-wrapper">
@@ -51,38 +61,23 @@
         </article>
     </section>
 
-    <section class="profile-charts">
-        <div class="chart-wrapper">
-            <h3 class="chart-title">Danceability Chart</h3>
-            <canvas id="danceabilityChart" class="chart"></canvas>
-        </div>
-        <div class="chart-wrapper">
-            <h3 class="chart-title">Energy Chart</h3>
-            <canvas id="energyChart" class="chart"></canvas>
-        </div>
-        <div class="chart-wrapper">
-            <h3 class="chart-title">Tempo Chart</h3>
-            <canvas id="tempoChart" class="chart"></canvas>
-        </div>
-    </section>
-
-    {{!-- <section class="my-activities">
-        <article class="post-box">
-            <div class="post-box__type-icon">
-                <i class="icon icon-headphones"></i>
-            </div>
-            <h4 class="post-box__type">Music</h4>
-            <time class="post-box__time">
-                <i class="icon icon-clock"></i>
-                <span>6 days ago</span>
-            </time>
-            <div class="post-box__body">
-                <div class="music-activity">
-                    <h3 class="music-activity__artist">Austin</h3>
-                    <h2 class="music-activity__title">In Betweenin’</h2>
+    <section class="my-activities">
+        {{#if userData.notMe}}
+        <div class="box box--new-post">
+            <form method="post" action="/new-post">
+                <textarea class="box--new-post__textarea" name="post_body" rows="3" placeholder="Write a new post..."></textarea>
+                <div class="box--new-post__footer">
+                    <label class="switch">
+                        <input name="post_is_public" type="checkbox" checked>
+                        <span>Keep it public</span>
+                    </label>
+                    <input class="btn btn--primary btn--box--new-post" type="submit" value="POST">
                 </div>
-            </div>
-        </article>
+            </form>
+        </div>
+        {{/if}}
+        {{#if userData.posts}}
+        {{#each userData.posts}}
         <article class="post-box">
             <div class="post-box__type-icon">
                 <i class="icon icon-align-left"></i>
@@ -90,16 +85,17 @@
             <h4 class="post-box__type">Post</h4>
             <time class="post-box__time">
                 <i class="icon icon-clock"></i>
-                <span>6 days ago</span>
+                <span>{{ moment this.date}}</span>
             </time>
             <div class="post-box__body">
                 <div class="post-activity">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa delectus cum harum molestiae possimus, praesentium beatae repudiandae nam at eius, eum omnis id ut magnam
-                        inventore veritatis doloremque, expedita laboriosam?</p>
+                    {{ this.body }}
                 </div>
             </div>
         </article>
-        <article class="post-box">
+        {{/each}}
+        {{/if}}
+        {{!-- <article class="post-box">
             <div class="post-box__type-icon">
                 <i class="icon icon-headphones"></i>
             </div>
@@ -114,8 +110,24 @@
                     <h2 class="music-activity__title">In Betweenin’</h2>
                 </div>
             </div>
-        </article>
-    </section> --}}
+        </article> --}}
+    </section>
+
+
+    <section class="profile-charts">
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Danceability</h3>
+            <canvas id="danceabilityChart" class="chart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Energy</h3>
+            <canvas id="energyChart" class="chart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Tempo</h3>
+            <canvas id="tempoChart" class="chart"></canvas>
+        </div>
+    </section>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
@@ -150,13 +162,14 @@
             data: {
                 labels: arr,
                 datasets: [{
-                    label: '💃',
+                    label: '',
                     data: dataDance,
                     backgroundColor: [
-                        'rgba(255, 159, 64, 0.8)'
+                        'rgba(88, 255, 168, .2)'
                     ],
-
-                    borderWidth: 1
+                    borderColor: 'rgba(88, 255, 168, 1)',
+                    borderCapStyle: 'round',
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -179,13 +192,14 @@
             data: {
                 labels: arr,
                 datasets: [{
-                    label: '⚡️',
+                    label: '',
                     data: dataEnergy,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.8)'
+                        'rgba(165, 88, 255, .2)'
                     ],
-
-                    borderWidth: 1
+                    borderColor: 'rgba(165, 88, 255, 1)',
+                    borderCapStyle: 'round',
+                    borderWidth: 2
                 }]
             },
             options: {
@@ -208,14 +222,15 @@
             data: {
                 labels: arr,
                 datasets: [{
-                    label: '🥁',
+                    label: '',
                     fontColor: 'rgba(54, 162, 235)',
                     data: dataTempo,
                     backgroundColor: [
-                        'rgba(54, 162, 235, 0.8)'
+                        'rgba(241, 39, 162, .2)'
                     ],
-
-                    borderWidth: 1
+                    borderColor: 'rgba(241, 39, 162, 1)',
+                    borderCapStyle: 'round',
+                    borderWidth: 2
                 }]
             },
             options: {

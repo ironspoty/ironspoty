@@ -6,18 +6,10 @@ const trackSchema = new mongoose.Schema(
             type: String,
             required: "Name is required"
         },
-        artists: {
-            type: Array
-        },
-        popularity: {
-            type: Number
-        },
-        spotifyUrl: {
-            type: String
-        },
-        spotifyId: {
-            type: String
-        }
+        artists: Array,
+        popularity: Number,
+        spotifyUrl: String,
+        spotifyId: String
     }
 );
 

@@ -7,6 +7,7 @@ const hbs = require('hbs');
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const path = require('path');
+const moment = require('moment');
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
@@ -97,6 +98,10 @@ app.use(require('node-sass-middleware')({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
+
+hbs.registerHelper('moment', function (date) {
+    return moment(date).fromNow();
+});
 
 app.use((req, res, next) => {
     res.locals.flashMessage = req.flash("error");

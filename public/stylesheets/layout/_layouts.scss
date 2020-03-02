@@ -16,8 +16,18 @@
     padding: 0 135px;
 
     .card {
-        margin: 0 16px;
+        margin: 0 16px 32px;
     }
+}
+
+//
+//  Map
+// --------------------------------------------------
+
+.matches-wrapper {
+    position: absolute;
+    right: 40px;
+    z-index: 2;
 }
 
 //
@@ -26,27 +36,36 @@
 
 .my-profile {
     display: flex;
+    justify-content: space-between;
 
     .profile-box {
         margin-right: 75px;
     }
-}
 
-.my-activities {
-    max-width: 700px;
-    width: 100%;
-}
+    .my-activities {
+        max-width: 900px;
+        width: 100%;
+        margin-right: 75px;
+    }
 
-.profile-charts {
-    .chart-wrapper {
-        margin-bottom: 25px;
+    .profile-charts {
+        .chart-wrapper {
+            position: relative;
+            margin-bottom: 40px;
 
-        .chart-title {
-            margin-top: 0;
-        }
-        .chart {
-            width: 480px !important;
-            height: 242px !important;
+            .chart-title {
+                margin-top: 0;
+                font-size: 40px;
+                text-align: right;
+                margin-bottom: 0;
+                opacity: .1;
+            }
+            .chart {
+                width: 480px !important;
+                height: 242px !important;
+                position: relative;
+                z-index: 2;
+            }
         }
     }
 }

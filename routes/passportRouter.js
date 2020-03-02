@@ -3,19 +3,21 @@ require('dotenv').config();
 const { isLoggedIn, isLoggedOut, getSpotityToken } = require('../lib');
 const querystring = require('querystring');
 const axios = require('axios');
-const express = require("express");
+const express = require('express');
 const passportRouter = express.Router();
-const ensureLogin = require("connect-ensure-login");
+const ensureLogin = require('connect-ensure-login');
+const moment = require('moment');
 
 // Require user model
-const User = require("../models/User");
+const User = require('../models/User');
+const Post = require('../models/Post');
 
 // Add bcrypt to encrypt passwords
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 const bcryptSalt = 10;
 
 // Add passport
-const passport = require("passport");
+const passport = require('passport');
 
 
 // -------------------------
@@ -81,51 +83,13 @@ const updateUserCurrentTracks = (req, res) => {
     })
 }
 
-
 let spotyAccessToken = '';
 
-
-
-//Get
+// SIGN UP
 passportRouter.get("/signup", isLoggedOut(), (req, res, next) => {
     res.render("passport/signup");
 });
 
-passportRouter.get("/friends", async (req, res, next) => {
-    const user = await User
-        .find({ '_id': req.user._id })
-        .populate('friends');
-
-    let friends = user[0].friends.map(friend => {
-        friend.currentlyPlaying.artists = typeof friend.currentlyPlaying.artists === 'object' ?
-            friend.currentlyPlaying.artists.map(artist => artist.name).join(', ') :
-            friend.currentlyPlaying.artists
-        friend.recentlyPlayed = friend.recentlyPlayed.slice(0, 3);
-        return friend;
-    })
-
-    res.render('passport/friends', { friends })
-});
-
-passportRouter.get("/map", async (req, res, next) => {
-    const users = await User.find({});
-    const usersData = users.map(user => {
-        return {
-            "fullname": user.fullname,
-            "initials": user.initials,
-            "gender": user.gender,
-            "age": user.dob.age,
-            "avatar": user.avatar,
-            "favoriteGenres": user.favoriteGenres,
-            "coordinates": [user.coordinates.longitude, user.coordinates.latitude]
-        }
-    })
-
-    res.render("passport/map", { usersDataJSON: JSON.stringify(usersData), usersData: usersData });
-});
-
-
-//Post
 passportRouter.post("/signup", isLoggedOut(), (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
@@ -167,8 +131,7 @@ passportRouter.post("/signup", isLoggedOut(), (req, res, next) => {
 });
 
 
-//LOG IN
-
+// LOG IN
 passportRouter.get("/login", isLoggedOut(), (req, res, next) => {
     res.render("passport/login");
 });
@@ -180,13 +143,15 @@ passportRouter.post("/login", passport.authenticate("local", {
     passReqToCallback: true
 }));
 
-//LOG OUT
-passportRouter.get("/logout", isLoggedIn(), (req, res, next) => {
+
+// LOG OUT
+passportRouter.get("/logout", ensureLogin.ensureLoggedIn(), (req, res, next) => {
     req.logout();
     res.redirect("/login");
 });
 
-//SPOTIFY
+
+// SPOTIFY
 passportRouter.get("/spotify", ensureLogin.ensureLoggedIn(), (req, res) => {
 
     const scopes = SCOPES;
@@ -229,6 +194,41 @@ passportRouter.get("/callback", ensureLogin.ensureLoggedIn(), async (req, res) =
     res.redirect('/profile');
 });
 
+
+// APP INNER
+passportRouter.get("/friends", async (req, res, next) => {
+    const user = await User
+        .find({ '_id': req.user._id })
+        .populate('friends');
+
+    let friends = user[0].friends.map(friend => {
+        friend.currentlyPlaying.artists = typeof friend.currentlyPlaying.artists === 'object' ?
+            friend.currentlyPlaying.artists.map(artist => artist.name).join(', ') :
+            friend.currentlyPlaying.artists
+        friend.recentlyPlayed = friend.recentlyPlayed.slice(0, 3);
+        return friend;
+    })
+
+    res.render('passport/friends', { friends })
+});
+
+passportRouter.get("/map", async (req, res, next) => {
+    const users = await User.find({ _id: { $ne: req.user._id } });
+    const usersData = users.map(user => {
+        return {
+            "id": user._id,
+            "fullname": user.fullname,
+            "initials": user.initials,
+            "gender": user.gender,
+            "age": user.dob.age,
+            "avatar": user.avatar,
+            "favoriteGenres": user.favoriteGenres,
+            "coordinates": [user.coordinates.longitude, user.coordinates.latitude]
+        }
+    })
+
+    res.render("passport/map", { usersDataJSON: JSON.stringify(usersData), usersData: usersData });
+});
 
 passportRouter.get("/profile", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
@@ -283,10 +283,31 @@ passportRouter.get("/profile", ensureLogin.ensureLoggedIn(), async (req, res, ne
         currentlyPlaying: currentlyPlaying.data
     });
 
-    res.render("passport/profile", { userData: updatedUser });
+    let userData = updatedUser;
+    userData.cantBeFriended = true;
+    userData.notMe = userData.id !== req.user._id;
+    userData.posts = await Post.find({ 'author': req.user._id }).sort({ 'createdAt': -1 });
+
+    res.render("passport/profile", { userData });
 
 });
 
+passportRouter.post("/new-post", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+
+    const { post_body, post_is_public } = req.body;
+
+    await Post.create({
+        author: req.user._id,
+        body: post_body,
+        posttype: 'post',
+        hidden: post_is_public ? true : false
+    });
+
+    res.redirect("/profile");
+});
+
+
+// APP INNER - ASYNC FRONTEND'S REQUEST
 passportRouter.get('/chartData', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
     let id = req.query.id || req.user._id;
@@ -313,46 +334,39 @@ passportRouter.get('/chartData', ensureLogin.ensureLoggedIn(), async (req, res, 
         })
 })
 
-passportRouter.get('/search', ensureLogin.ensureLoggedIn(), (req, res, next) => {
-    if (spotyAccessToken) {
-        res.render('passport/search');
-    } else {
-        res.redirect('/');
-    }
-})
 
-passportRouter.post('/search', (req, res, next) => {
-    axios({
-        method: 'get',
-        url: `https://api.spotify.com/v1/search?query=${req.body.q}&type=${req.body.type}&offset=0&limit=20`,
-        headers: {
-            'Authorization': `Bearer ${spotyAccessToken}`
-        },
-        responseType: 'json'
-    }).then(response => {
-        res.render('passport/search', { response: response.data });
-    }).catch(e => {
-        console.log(`
-            =======================================
-            ===============  ERROR  ===============
-            ${e}
-            =======================================`);
-        return e;
-    })
-})
-
+// APP INNER - WITH PARAMS
 passportRouter.get('/profile/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
-
-    if (!spotyAccessToken) {
-        res.redirect('/logout');
-    }
 
     const { id } = req.params;
     const userData = await User.findById(id);
 
     userData.currentlyPlaying.artists = userData.currentlyPlaying.artists.map(artist => artist.name).join(', ');
+    userData.cantBeFriended = req.user.friends.includes(id);
+    userData.notMe = userData.id === req.user._id;
+    userData.posts = await Post.find({ 'author': req.user._id, 'hidden': true }).sort({ 'createdAt': -1 });
 
     res.render("passport/profile", { userData });
+})
+
+passportRouter.get('/befriend/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+
+    const currentUserId = req.user._id;
+    const friendId = req.params.id;
+
+    await User.findByIdAndUpdate(currentUserId, { $push: { friends: friendId } });
+
+    res.redirect("/friends");
+})
+
+passportRouter.get('/unfriend/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+
+    const currentUserId = req.user._id;
+    const friendId = req.params.id;
+
+    await User.findByIdAndUpdate(currentUserId, { $pull: { friends: { $in: [friendId] } } });
+
+    res.redirect("/friends");
 })
 
 module.exports = passportRouter;

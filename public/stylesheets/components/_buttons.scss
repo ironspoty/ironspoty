@@ -3,10 +3,8 @@
 // --------------------------------------------------
 
 .btn {
-    max-width: 325px;
     width: 100%;
-    padding: 22px 0;
-    font: 14px 'Ubuntu', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     letter-spacing: 0;
     text-align: center;
     border-radius: 3px;
@@ -14,6 +12,7 @@
     cursor: pointer;
     position: relative;
     outline: none;
+    text-decoration: none;
     box-shadow: none;
     transition: background-color .35s, color .35s;
 
@@ -33,7 +32,37 @@
         }
     }
 
+    &--secondary {
+        background: #923bf5;
+        color: #fff;
+        border-radius: 2px;
+
+        &:hover {
+            background-color: #710fe0;
+        }
+    }
+
+    &--sm {
+        max-width: auto;
+        width: auto;
+        display: inline-block;
+        padding: 4px 8px;
+        font-size: 13px;
+    }
+
+    &--lg {
+        max-width: 325px;
+        padding: 22px 0;
+        font-size: 14px;
+    }
+
     &--with-shadow {
         box-shadow: 0 5px 7px 4px rgba(0,0,0,0.15);
+    }
+
+    &--box--new-post {
+        max-width: 100px;
+        padding: 16px 0;
+        font-size: 14px;
     }
 }

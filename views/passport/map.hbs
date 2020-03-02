@@ -1,23 +1,27 @@
-<div class="map-wrapper" style="position: absolute; z-index: 2; right: 10px;">
+<div class="matches-wrapper">
     {{#if usersData}}
     {{#each usersData}}
-    <article class="card card--horizontal card--{{this.gender}}">
+    <article class="card card--horizontal card--{{this.gender}}" data-id="{{this.id}}" data-gender="{{this.gender}}">
         <div class="card__img-holder">
             <div class="card__img-wrapper">
-                {{#unless this.avatar}}
-                <div class="no-avatar">
-                    <span>{{ this.initials }}</span>
-                </div>
-                {{/unless}}
-                {{#if this.avatar}}
-                <div>
-                    <img class="card__img" src="{{ this.avatar }}" width="72" alt="">
-                </div>
-                {{/if}}
+                <a href="/profile/{{this.id}}">
+                    {{#unless this.avatar}}
+                    <div class="no-avatar">
+                        <span>{{ this.initials }}</span>
+                    </div>
+                    {{/unless}}
+                    {{#if this.avatar}}
+                    <div>
+                        <img class="card__img" src="{{ this.avatar }}" width="72" alt="">
+                    </div>
+                    {{/if}}
+                </a>
             </div>
         </div>
         <div class="card__info">
-            <h2 class="card__info__title">{{ this.fullname }}</h2>
+            <h2 class="card__info__title">
+                <a href="/profile/{{this.id}}">{{ this.fullname }}</a>
+            </h2>
             <div class="tag-wrapper">
                 {{#each this.favoriteGenres}}
                 <span class="tag tag--small">{{ this.name }}</span>
