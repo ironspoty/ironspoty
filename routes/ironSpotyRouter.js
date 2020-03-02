@@ -200,6 +200,10 @@ ironSpotyRouter.get("/friends", ensureLogin.ensureLoggedIn(), async (req, res, n
 
 ironSpotyRouter.get("/profile", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
+    if (!spotyAccessToken) {
+        res.redirect('/logout');
+    }
+
     if (req.user.userSpotifyData) {
         const recentlyPlayed = await axios({
             url: `https://api.spotify.com/v1/me/player/recently-played?limit=10`,
