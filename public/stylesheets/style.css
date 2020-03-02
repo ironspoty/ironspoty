@@ -17,7 +17,7 @@ a {
   a:hover, a:focus, a:active {
     outline: 0; }
 
-.absolutely-centered, .box--login, .card .no-avatar span, .card__img-wrapper div, .card__img, .card--horizontal .no-avatar span, .card--horizontal .card__img-wrapper div, .card--horizontal .card__img, .post-box__type-icon .icon, .modal {
+.absolutely-centered, .box--login, .box--error, .card .no-avatar span, .card__img-wrapper div, .card__img, .card--horizontal .no-avatar span, .card--horizontal .card__img-wrapper div, .card--horizontal .card__img, .post-box__type-icon .icon, .modal {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -260,6 +260,9 @@ a {
     letter-spacing: -1.7px;
     margin: -100px 0 35px 0;
     line-height: normal; }
+  .box__info {
+    font-size: 18px;
+    line-height: 26px; }
   .box--login {
     max-width: 380px; }
   .box--new-post {
@@ -276,6 +279,8 @@ a {
       justify-content: space-between;
       align-items: center;
       margin-top: 10px; }
+  .box--error {
+    max-width: 800px; }
 
 .card {
   background: #101010;

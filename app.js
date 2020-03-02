@@ -110,10 +110,7 @@ app.use((req, res, next) => {
 });
 
 // Routes middleware goes here
-const index = require('./routes/index');
-app.use('/', index);
-
-const passportRouter = require("./routes/passportRouter");
-app.use('/', passportRouter);
+const ironSpotyRouter = require("./routes/ironSpotyRouter");
+app.use('/', ironSpotyRouter);
 
 module.exports = app;

@@ -4,7 +4,7 @@ const { isLoggedIn, isLoggedOut, getSpotityToken } = require('../lib');
 const querystring = require('querystring');
 const axios = require('axios');
 const express = require('express');
-const passportRouter = express.Router();
+const ironSpotyRouter = express.Router();
 const ensureLogin = require('connect-ensure-login');
 const moment = require('moment');
 
@@ -29,68 +29,15 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const SCOPES = process.env.SCOPES;
 
-
-// -------------------------
-// Helper functions
-// -------------------------
-const updateUserCurrentTracks = (req, res) => {
-    axios({
-        method: 'get',
-        url: `https://api.spotify.com/v1/me/player/recently-played?limit=10`,
-        headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
-        transformResponse: [(data) => {
-            let transformedData = JSON.parse(data);
-
-            return transformedData.items.map(item => {
-                return {
-                    "name": item.track.name,
-                    "popularity": item.track.popularity,
-                    "artists": item.track.artists.map(artist => artist.name).join(', '),
-                    "played_at": item.played_at,
-                    "duration_ms": item.track.duration_ms,
-                    "spotifyUrl": item.track.external_urls.spotify,
-                    "spotifyId": item.track.id
-                }
-            })
-        }],
-    }).then(async (response) => {
-        await User.findByIdAndUpdate(req.user._id, {
-            recentlyPlayed: response.data
-        });
-
-        return axios({
-            method: 'get',
-            url: `https://api.spotify.com/v1/me/player/currently-playing`,
-            headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
-            transformResponse: [(data) => {
-                let transformedData = JSON.parse(data);
-
-                return {
-                    "name": transformedData.item.name,
-                    "popularity": transformedData.item.popularity,
-                    "artists": transformedData.item.artists.map(artist => artist.name).join(', '),
-                    "played_at": transformedData.item.played_at,
-                    "duration_ms": transformedData.item.duration_ms,
-                    "spotifyUrl": transformedData.item.external_urls.spotify,
-                    "spotifyId": transformedData.item.id
-                }
-            }]
-        }).then(async (response) => {
-            await User.findByIdAndUpdate(req.user._id, {
-                currentlyPlaying: response.data
-            });
-        })
-    })
-}
-
 let spotyAccessToken = '';
 
+
 // SIGN UP
-passportRouter.get("/signup", isLoggedOut(), (req, res, next) => {
-    res.render("passport/signup");
+ironSpotyRouter.get("/signup", isLoggedOut(), (req, res, next) => {
+    res.render("app/signup");
 });
 
-passportRouter.post("/signup", isLoggedOut(), (req, res, next) => {
+ironSpotyRouter.post("/signup", isLoggedOut(), (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -132,11 +79,11 @@ passportRouter.post("/signup", isLoggedOut(), (req, res, next) => {
 
 
 // LOG IN
-passportRouter.get("/login", isLoggedOut(), (req, res, next) => {
-    res.render("passport/login");
+ironSpotyRouter.get("/login", (req, res, next) => {
+    res.render("app/login");
 });
 
-passportRouter.post("/login", passport.authenticate("local", {
+ironSpotyRouter.post("/login", passport.authenticate("local", {
     successRedirect: "/spotify",
     failureRedirect: "/login",
     failureFlash: true,
@@ -145,14 +92,14 @@ passportRouter.post("/login", passport.authenticate("local", {
 
 
 // LOG OUT
-passportRouter.get("/logout", ensureLogin.ensureLoggedIn(), (req, res, next) => {
+ironSpotyRouter.get("/logout", ensureLogin.ensureLoggedIn(), (req, res, next) => {
     req.logout();
     res.redirect("/login");
 });
 
 
 // SPOTIFY
-passportRouter.get("/spotify", ensureLogin.ensureLoggedIn(), (req, res) => {
+ironSpotyRouter.get("/spotify", ensureLogin.ensureLoggedIn(), (req, res) => {
 
     const scopes = SCOPES;
     const my_client_id = CLIENT_ID;
@@ -161,11 +108,17 @@ passportRouter.get("/spotify", ensureLogin.ensureLoggedIn(), (req, res) => {
     res.redirect('https://accounts.spotify.com/authorize' +
         '?response_type=code' +
         '&client_id=' + my_client_id +
+        '&show_dialog=true' +
         (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
         '&redirect_uri=' + encodeURIComponent(redirect_uri));
 });
 
-passportRouter.get("/callback", ensureLogin.ensureLoggedIn(), async (req, res) => {
+ironSpotyRouter.get("/callback", ensureLogin.ensureLoggedIn(), async (req, res) => {
+
+    if (req.query.error) {
+        req.logout();
+        res.redirect('/auth-error');
+    }
 
     const spotifyToken = await axios({
         method: 'post',
@@ -194,9 +147,20 @@ passportRouter.get("/callback", ensureLogin.ensureLoggedIn(), async (req, res) =
     res.redirect('/profile');
 });
 
+ironSpotyRouter.get("/auth-error", isLoggedOut(), (req, res, next) => {
+    res.render("app/auth-error");
+});
+
 
 // APP INNER
-passportRouter.get("/friends", async (req, res, next) => {
+ironSpotyRouter.get('/', ensureLogin.ensureLoggedIn(), (req, res, next) => {
+    if (req.user)
+        res.redirect('/profile');
+    else
+        res.redirect('/login');
+});
+
+ironSpotyRouter.get("/friends", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     const user = await User
         .find({ '_id': req.user._id })
         .populate('friends');
@@ -209,10 +173,10 @@ passportRouter.get("/friends", async (req, res, next) => {
         return friend;
     })
 
-    res.render('passport/friends', { friends })
+    res.render('app/friends', { friends })
 });
 
-passportRouter.get("/map", async (req, res, next) => {
+ironSpotyRouter.get("/map", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     const users = await User.find({ _id: { $ne: req.user._id } });
     const usersData = users.map(user => {
         return {
@@ -227,10 +191,10 @@ passportRouter.get("/map", async (req, res, next) => {
         }
     })
 
-    res.render("passport/map", { usersDataJSON: JSON.stringify(usersData), usersData: usersData });
+    res.render("app/map", { usersDataJSON: JSON.stringify(usersData), usersData: usersData });
 });
 
-passportRouter.get("/profile", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+ironSpotyRouter.get("/profile", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
     if (!spotyAccessToken) {
         res.redirect('/logout');
@@ -288,11 +252,11 @@ passportRouter.get("/profile", ensureLogin.ensureLoggedIn(), async (req, res, ne
     userData.notMe = userData.id !== req.user._id;
     userData.posts = await Post.find({ 'author': req.user._id }).sort({ 'createdAt': -1 });
 
-    res.render("passport/profile", { userData });
+    res.render("app/profile", { userData });
 
 });
 
-passportRouter.post("/new-post", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+ironSpotyRouter.post("/new-post", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
     const { post_body, post_is_public } = req.body;
 
@@ -308,7 +272,7 @@ passportRouter.post("/new-post", ensureLogin.ensureLoggedIn(), async (req, res, 
 
 
 // APP INNER - ASYNC FRONTEND'S REQUEST
-passportRouter.get('/chartData', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+ironSpotyRouter.get('/chartData', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
     let id = req.query.id || req.user._id;
 
@@ -336,7 +300,7 @@ passportRouter.get('/chartData', ensureLogin.ensureLoggedIn(), async (req, res, 
 
 
 // APP INNER - WITH PARAMS
-passportRouter.get('/profile/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+ironSpotyRouter.get('/profile/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
     const { id } = req.params;
     const userData = await User.findById(id);
@@ -344,12 +308,12 @@ passportRouter.get('/profile/:id', ensureLogin.ensureLoggedIn(), async (req, res
     userData.currentlyPlaying.artists = userData.currentlyPlaying.artists.map(artist => artist.name).join(', ');
     userData.cantBeFriended = req.user.friends.includes(id);
     userData.notMe = userData.id === req.user._id;
-    userData.posts = await Post.find({ 'author': req.user._id, 'hidden': true }).sort({ 'createdAt': -1 });
+    userData.posts = await Post.find({ 'author': id, 'hidden': false }).sort({ 'createdAt': -1 });
 
-    res.render("passport/profile", { userData });
+    res.render("app/profile", { userData });
 })
 
-passportRouter.get('/befriend/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+ironSpotyRouter.get('/befriend/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
     const currentUserId = req.user._id;
     const friendId = req.params.id;
@@ -359,7 +323,7 @@ passportRouter.get('/befriend/:id', ensureLogin.ensureLoggedIn(), async (req, re
     res.redirect("/friends");
 })
 
-passportRouter.get('/unfriend/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+ironSpotyRouter.get('/unfriend/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
 
     const currentUserId = req.user._id;
     const friendId = req.params.id;
@@ -369,4 +333,4 @@ passportRouter.get('/unfriend/:id', ensureLogin.ensureLoggedIn(), async (req, re
     res.redirect("/friends");
 })
 
-module.exports = passportRouter;
+module.exports = ironSpotyRouter;

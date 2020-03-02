@@ -29,6 +29,11 @@
         line-height: normal;
     }
 
+    &__info {
+        font-size: 18px;
+        line-height: 26px;
+    }
+
     &--login {
         @extend .absolutely-centered;
         max-width: 380px;
@@ -55,5 +60,10 @@
             align-items: center;
             margin-top: 10px;
         }
+    }
+
+    &--error {
+        @extend .absolutely-centered;
+        max-width: 800px;
     }
 }
