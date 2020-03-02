@@ -9,7 +9,11 @@
 .card-wrapper {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    padding: 0 135px;
+
+    .card {
+        margin: 0 16px;
+    }
 }
 
 .my-profile {

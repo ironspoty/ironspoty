@@ -14,17 +14,20 @@
 @import "components/_badge.scss";
 @import "components/_tag.scss";
 @import "components/_post-box.scss";
+@import "components/_mapbox.scss";
+
+// Website Sections
+@import "layout/_layouts.scss";
 
 
 .image-size{
   width:40px;
   height:40px;
   border-radius: 50%;
-  
+
 }
 
 #chartSize{
-
   float:right;
   margin-right: 50px;
 }
@@ -46,10 +49,10 @@
   // display: -moz-flex;
   // display: -webkit-flex;
   display: flex;
-  
+
 }
 
-.nowrap  { 
+.nowrap  {
   // -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
 }
@@ -61,7 +64,7 @@
 
   // padding: 1px;
   // margin: 1px;
-  
+
   // line-height: 10px;
   // color: white;
   // font-weight: bold;
@@ -69,13 +72,3 @@
   // text-align: center;
 
 }
-// Website Sections
-
-#map{
-width:100vw;
-height:100vh;
-position:fixed;
-top:0;
-left:0;
-}
-@import "layout/_layouts.scss";

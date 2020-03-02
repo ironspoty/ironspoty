@@ -17,7 +17,7 @@ a {
   a:hover, a:focus, a:active {
     outline: 0; }
 
-.absolutely-centered, .card .no-avatar span, .card__img-wrapper div, .card__img, .post-box__type-icon .icon {
+.absolutely-centered, .card .no-avatar span, .card__img-wrapper div, .card__img, .card--horizontal .no-avatar span, .card--horizontal .card__img-wrapper div, .card--horizontal .card__img, .post-box__type-icon .icon {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -324,6 +324,68 @@ a {
   .card--profile.card--female .card__img-wrapper {
     border: 5px solid #A558FF;
     box-shadow: 0 0 8px 1px rgba(255, 255, 255, 0.87); }
+  .card--horizontal {
+    width: 416px;
+    padding: 22px;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px; }
+    .card--horizontal .no-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      position: relative; }
+      .card--horizontal .no-avatar span {
+        font-size: 24px;
+        font-weight: bold; }
+    .card--horizontal .card__img-holder {
+      flex: 0 1 28%; }
+    .card--horizontal .card__img-wrapper {
+      width: 82px;
+      height: 82px;
+      margin: 0;
+      border-radius: 50%;
+      position: relative; }
+      .card--horizontal .card__img-wrapper div {
+        display: block;
+        width: 62px;
+        height: 62px;
+        border-radius: 50%;
+        overflow: hidden; }
+      .card--horizontal .card__img-wrapper .badge {
+        position: absolute;
+        right: 0;
+        bottom: 0; }
+    .card--horizontal .card__info {
+      flex: 0 1 57%;
+      text-align: left;
+      margin-bottom: 0; }
+      .card--horizontal .card__info__title {
+        text-align: left;
+        margin-bottom: 5px;
+        font-size: 23px;
+        color: #fff; }
+      .card--horizontal .card__info .tag-wrapper {
+        padding-left: 0;
+        padding-right: 0; }
+    .card--horizontal .card__status {
+      flex: 0 1 15%;
+      text-align: center; }
+      .card--horizontal .card__status .badge.badge--music {
+        width: 40px;
+        height: 40px; }
+        .card--horizontal .card__status .badge.badge--music .icon {
+          font-size: 20px; }
+  .card--friend .card__info {
+    padding: 0 25px; }
+  .card--map-bubble {
+    background: transparent;
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 0; }
+    .card--map-bubble .card__img-wrapper {
+      margin: 0; }
 
 .badge {
   width: 32px;
@@ -426,6 +488,38 @@ a {
   .post-activity p {
     margin-bottom: 0; }
 
+#map {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0; }
+
+.mapboxgl-popup-content {
+  background: transparent; }
+
+.mapboxgl-popup-content {
+  padding: 0; }
+
+.main-content {
+  padding: 120px 45px 0 45px; }
+
+.card-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 135px; }
+  .card-wrapper .card {
+    margin: 0 16px; }
+
+.my-profile {
+  display: flex; }
+  .my-profile .profile-box {
+    margin-right: 75px; }
+
+.my-activities {
+  max-width: 700px;
+  width: 100%; }
+
 .image-size {
   width: 40px;
   height: 40px;
@@ -451,29 +545,5 @@ a {
   height: 568px;
   background: grey;
   font-size: 10px; }
-
-#map {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0; }
-
-.main-content {
-  padding: 120px 45px 0 45px; }
-
-.card-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between; }
-
-.my-profile {
-  display: flex; }
-  .my-profile .profile-box {
-    margin-right: 75px; }
-
-.my-activities {
-  max-width: 700px;
-  width: 100%; }
 
 /*# sourceMappingURL=style.css.map */

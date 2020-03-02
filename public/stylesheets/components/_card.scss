@@ -236,5 +236,110 @@
             }
         }
     }
+
+    //
+    //  Horizontal Card
+    // -----------------------------
+    &--horizontal {
+        width: 416px;
+        padding: 22px;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .no-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            position: relative;
+
+            span {
+                @extend .absolutely-centered;
+                font-size: 24px;
+                font-weight: bold;
+            }
+        }
+
+        .card__img-holder {
+            flex: 0 1 28%;
+        }
+            .card__img-wrapper {
+                width: 82px;
+                height: 82px;
+                margin: 0;
+                border-radius: 50%;
+                position: relative;
+
+                div {
+                    @extend .absolutely-centered;
+                    display: block;
+                    width: 62px;
+                    height: 62px;
+                    border-radius: 50%;
+                    overflow: hidden;
+                }
+
+                .badge {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                }
+            }
+                .card__img {
+                    @extend .absolutely-centered;
+                }
+
+        .card__info {
+            flex: 0 1 57%;
+            text-align: left;
+            margin-bottom: 0;
+
+            &__title {
+                text-align: left;
+                margin-bottom: 5px;
+                font-size: 23px;
+                color: #fff;
+            }
+            .tag-wrapper {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+
+        .card__status {
+            flex: 0 1 15%;
+            text-align: center;
+
+            .badge.badge--music {
+                width: 40px;
+                height: 40px;
+
+                .icon {
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+
+    &--friend {
+        .card__info {
+            padding: 0 25px;
+        }
+    }
+
+    //
+    //  Mapbox Card
+    // -----------------------------
+    &--map-bubble {
+        background: transparent;
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 0;
+
+        .card__img-wrapper {
+            margin: 0;
+        }
+    }
 }
 
