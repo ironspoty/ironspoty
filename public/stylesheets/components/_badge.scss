@@ -3,6 +3,7 @@
 // --------------------------------------------------
 
 .badge {
+    background-color: #777;
     width: 32px;
     height: 32px;
     border-radius: 50%;
@@ -13,5 +14,12 @@
     &--music {
         background-image: linear-gradient(206deg, #F127A2 0%, #FD29A6 95%);
         font-size: 17px;
+    }
+
+    &--offline {
+        width: 48px;
+        height: 48px;
+        font-size: 19px;
+        opacity: .7;
     }
 }

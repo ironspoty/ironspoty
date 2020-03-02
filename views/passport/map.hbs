@@ -135,178 +135,43 @@
                     }
                 })
             }
-        },
-
-
-            {
-                'type': 'Feature',
-                'properties': {
-                    'description':
-                        '<img  width="100vw" height="100vh"src="https://randomuser.me/api/portraits/men/60.jpg"><br><strong>Alfred</strong>'
-
-                },
-                'geometry': {
-                    'type': 'Point',
-                    'coordinates': [-3.6867364, 40.4601224]
-
-                }
-            },
-
-            map.on('click', 'points', function (e) {
-                var coordinates = e.features[0].geometry.coordinates.slice();
-                var description = e.features[0].properties.description;
-
-
-                {
-                    'type': 'Feature',
-                        'properties': {
-                        'description':
-                        '<img  width="100vw" height="100vh"src="https://randomuser.me/api/portraits/women/51.jpg"><br><strong>Maelys</strong>'
-
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                            'coordinates': [-3.6924296, 40.4251223]
-
-                    }
-                },
-
-
-                {
-                    'type': 'Feature',
-                        'properties': {
-                        'description':
-                        '<img  width="100vw" height="100vh"src="https://randomuser.me/api/portraits/men/9.jpg"><br><strong>Ismael</strong>'
-
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                            'coordinates': [-3.7159634, 40.4390676]
-
-                    }
-                },
-
-                {
-                    'type': 'Feature',
-                        'properties': {
-                        'description':
-                        '<img  width="100vw" height="100vh"src="https://randomuser.me/api/portraits/men/63.jpg"><br><strong>Joaquin</strong>'
-
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                            'coordinates': [-3.726689, 40.427977]
-
-                    }
-                },
-
-                {
-                    'type': 'Feature',
-                        'properties': {
-                        'description':
-                        '<img  width="100vw" height="100vh"src="https://randomuser.me/api/portraits/men/92.jpg"><br><strong>Aitor</strong>'
-
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                            'coordinates': [-3.7304776, 40.4613439]
-
-                    }
-                },
-
-
-                {
-                    'type': 'Feature',
-                        'properties': {
-                        'description':
-                        '<img  width="100vw" height="100vh"src="https://randomuser.me/api/portraits/men/36.jpg"><br><strong>Ramon</strong>'
-
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                            'coordinates': [-3.7150402, 40.4103102]
-
-                    }
-                },
-
-
-          /*
-           {
-             'type': 'Feature',
-             'geometry': {
-               'type': 'Point',
-               'coordinates': [-3.6851124, 40.4456899]
-
-             }
-           },
-           {
-             'type': 'Feature',
-             'geometry': {
-               'type': 'Point',
-               'coordinates': [-3.6754097, 40.4569816]
-
-             }
-           },
-           {
-             'type': 'Feature',
-             'geometry': {
-               'type': 'Point',
-               'coordinates': [-3.6700987, 40.44825]
-
-             }
-           },
-           {
-             'type': 'Feature',
-             'geometry': {
-               'type': 'Point',
-               'coordinates': [-3.7009534, 40.4348648]
-
-             }
-           },
-           {
-             'type': 'Feature',
-             'geometry': {
-               'type': 'Point',
-               'coordinates': [-3.6848242, 40.4327656]
-
-             }
-           },
-           {
-             'type': 'Feature',
-             'geometry': {
-               'type': 'Point',
-               'coordinates': [-3.6713801, 40.4278899]
-
-             }
-           },
-
-
-
-
-
-
-
-
-
-           {
-             'type': 'Feature',
-             'geometry': {
-               'type': 'Point',
-               'coordinates': [-3.6866882, 40.4152606]
-
-             }
-           }
- */
-        ]
+        });
+        map.addLayer({
+            'id': 'points',
+            'type': 'symbol',
+            'source': 'points',
+            'layout': {
+                'icon-image': 'pulsing-dot',
+                'icon-allow-overlap': true
             }
+        });
     });
-    map.addLayer({
-        'id': 'points',
-        'type': 'symbol',
-        'source': 'points',
-        'layout': {
-            'icon-image': 'pulsing-dot',
-            'icon-allow-overlap': true
+
+    map.on('click', 'points', function (e) {
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.description;
+
+        // Ensure that if the map is zoomed out such that multiple
+        // copies of the feature are visible, the popup appears
+        // over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
+
+        new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(description)
+            .addTo(map);
     });
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'points', function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'points', function () {
+        map.getCanvas().style.cursor = '';
+    });
+
 </script>
