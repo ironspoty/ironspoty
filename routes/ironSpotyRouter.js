@@ -99,10 +99,6 @@ ironSpotyRouter.get("/logout", ensureLogin.ensureLoggedIn(), (req, res, next) =>
 // SPOTIFY
 ironSpotyRouter.get("/spotify", ensureLogin.ensureLoggedIn(), (req, res) => {
 
-    if (!req.user.userSpotifyData) {
-        res.redirect('/profile');
-    }
-
     const scopes = SCOPES;
     const my_client_id = CLIENT_ID;
     const redirect_uri = REDIRECT_URI;
@@ -122,31 +118,29 @@ ironSpotyRouter.get("/callback", ensureLogin.ensureLoggedIn(), async (req, res) 
         res.redirect('/auth-error');
     }
 
-    if (req.user.userSpotifyData) {
-        const spotifyToken = await axios({
-            method: 'post',
-            url: 'https://accounts.spotify.com/api/token',
-            headers: {
-                'Authorization': 'Basic ' + new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64'),
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            data: querystring.stringify({ grant_type: GRANT_TYPE, code: req.query.code, redirect_uri: REDIRECT_URI }),
-            responseType: 'json'
-        });
+    const spotifyToken = await axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        headers: {
+            'Authorization': 'Basic ' + new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64'),
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        data: querystring.stringify({ grant_type: GRANT_TYPE, code: req.query.code, redirect_uri: REDIRECT_URI }),
+        responseType: 'json'
+    });
 
-        spotyAccessToken = spotifyToken.data.access_token;
+    spotyAccessToken = spotifyToken.data.access_token;
 
-        const spotifyUserData = await axios({
-            method: 'get',
-            url: `https://api.spotify.com/v1/me`,
-            headers: { 'Authorization': `Bearer ${spotyAccessToken}` }
-        });
+    const spotifyUserData = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/me`,
+        headers: { 'Authorization': `Bearer ${spotyAccessToken}` }
+    });
 
-        await User.findByIdAndUpdate(req.user._id, {
-            userSpotifyData: spotifyUserData.data,
-            avatar: spotifyUserData.data.images[0].url
-        });
-    }
+    await User.findByIdAndUpdate(req.user._id, {
+        userSpotifyData: spotifyUserData.data,
+        avatar: spotifyUserData.data.images[0].url
+    });
 
     res.redirect('/profile');
 });
@@ -204,55 +198,53 @@ ironSpotyRouter.get("/profile", ensureLogin.ensureLoggedIn(), async (req, res, n
         res.redirect('/logout');
     }
 
-    if (req.user.userSpotifyData) {
-        const recentlyPlayed = await axios({
-            url: `https://api.spotify.com/v1/me/player/recently-played?limit=10`,
-            headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
-            transformResponse: [(data) => {
-                console.log(data);
+    const recentlyPlayed = await axios({
+        url: `https://api.spotify.com/v1/me/player/recently-played?limit=10`,
+        headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
+        transformResponse: [(data) => {
+            console.log(data);
+            let transformedData = JSON.parse(data);
+
+            return transformedData.items.map(item => {
+                return {
+                    "name": item.track.name,
+                    "popularity": item.track.popularity,
+                    "artists": item.track.artists.map(artist => artist.name).join(', '),
+                    "played_at": item.played_at,
+                    "duration_ms": item.track.duration_ms,
+                    "spotifyUrl": item.track.external_urls.spotify,
+                    "spotifyId": item.track.id
+                }
+            })
+        }],
+    })
+
+    const currentlyPlaying = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/me/player/currently-playing`,
+        headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
+        transformResponse: [(data) => {
+            if (data) {
+
                 let transformedData = JSON.parse(data);
 
-                return transformedData.items.map(item => {
-                    return {
-                        "name": item.track.name,
-                        "popularity": item.track.popularity,
-                        "artists": item.track.artists.map(artist => artist.name).join(', '),
-                        "played_at": item.played_at,
-                        "duration_ms": item.track.duration_ms,
-                        "spotifyUrl": item.track.external_urls.spotify,
-                        "spotifyId": item.track.id
-                    }
-                })
-            }],
-        })
-
-        const currentlyPlaying = await axios({
-            method: 'get',
-            url: `https://api.spotify.com/v1/me/player/currently-playing`,
-            headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
-            transformResponse: [(data) => {
-                if (data) {
-
-                    let transformedData = JSON.parse(data);
-
-                    return {
-                        "name": transformedData.item.name,
-                        "popularity": transformedData.item.popularity,
-                        "artists": transformedData.item.artists.map(artist => artist.name).join(', '),
-                        "played_at": transformedData.item.played_at,
-                        "duration_ms": transformedData.item.duration_ms,
-                        "spotifyUrl": transformedData.item.external_urls.spotify,
-                        "spotifyId": transformedData.item.id
-                    }
+                return {
+                    "name": transformedData.item.name,
+                    "popularity": transformedData.item.popularity,
+                    "artists": transformedData.item.artists.map(artist => artist.name).join(', '),
+                    "played_at": transformedData.item.played_at,
+                    "duration_ms": transformedData.item.duration_ms,
+                    "spotifyUrl": transformedData.item.external_urls.spotify,
+                    "spotifyId": transformedData.item.id
                 }
-            }]
-        })
+            }
+        }]
+    })
 
-        var updatedUser = await User.findByIdAndUpdate(req.user._id, {
-            recentlyPlayed: recentlyPlayed.data,
-            currentlyPlaying: currentlyPlaying.data
-        });
-    }
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, {
+        recentlyPlayed: recentlyPlayed.data,
+        currentlyPlaying: currentlyPlaying.data
+    });
 
     let userData = updatedUser || req.user;
     userData.cantBeFriended = true;
