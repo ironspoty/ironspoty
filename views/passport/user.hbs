@@ -2,8 +2,6 @@
 
 {{!-- <h2>We have found that</h2> --}}
 
-
-
 {{#if response.items}}
 <div id="chartSize">
 
@@ -15,8 +13,7 @@
     <ol class="flex-item">
         {{#each response.items}}
         <li>
-            <img width="40px" height="40px" border-radius="40px" class="image-size"
-                src={{ this.track.album.images.[0].url }} alt="Users Image">
+            <img width="40px" height="40px" border-radius="40px" class="image-size" src={{ this.track.album.images.[0].url }} alt="Users Image">
             {{ this.track.name }}
             {{!-- <p>Played at {{this.played_at}} </p>
             <p>This is the artist id: {{this.track.album.artists.[0].id}}</p> --}}

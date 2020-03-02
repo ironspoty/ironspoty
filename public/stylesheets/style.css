@@ -319,7 +319,7 @@ a {
         height: 36px;
         margin-right: 10px; }
       .card--profile .card__info__currently-playing div {
-        width: 180px; }
+        max-width: 180px; }
       .card--profile .card__info__currently-playing .card__info__subtitle {
         font-size: 11px;
         text-align: left;
@@ -524,11 +524,11 @@ a {
 .main-content {
   padding: 120px 45px 0 45px; }
 
-.card-wrapper {
+.friends-card-wrapper {
   display: flex;
   flex-wrap: wrap;
   padding: 0 135px; }
-  .card-wrapper .card {
+  .friends-card-wrapper .card {
     margin: 0 16px; }
 
 .my-profile {
@@ -540,18 +540,18 @@ a {
   max-width: 700px;
   width: 100%; }
 
+.profile-charts .chart-wrapper {
+  margin-bottom: 25px; }
+  .profile-charts .chart-wrapper .chart-title {
+    margin-top: 0; }
+  .profile-charts .chart-wrapper .chart {
+    width: 480px !important;
+    height: 242px !important; }
+
 .image-size {
   width: 40px;
   height: 40px;
   border-radius: 50%; }
-
-#chartSize {
-  float: right;
-  margin-right: 50px; }
-
-#myChart, #myChart2, #myChart3 {
-  width: 430px !important;
-  height: 200px !important; }
 
 .container {
   border: 1px solid silver;

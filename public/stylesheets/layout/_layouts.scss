@@ -6,7 +6,11 @@
     padding: 120px 45px 0 45px;
 }
 
-.card-wrapper {
+//
+//  Friends
+// --------------------------------------------------
+
+.friends-card-wrapper {
     display: flex;
     flex-wrap: wrap;
     padding: 0 135px;
@@ -15,6 +19,10 @@
         margin: 0 16px;
     }
 }
+
+//
+//  My Profile
+// --------------------------------------------------
 
 .my-profile {
     display: flex;
@@ -27,4 +35,18 @@
 .my-activities {
     max-width: 700px;
     width: 100%;
+}
+
+.profile-charts {
+    .chart-wrapper {
+        margin-bottom: 25px;
+
+        .chart-title {
+            margin-top: 0;
+        }
+        .chart {
+            width: 480px !important;
+            height: 242px !important;
+        }
+    }
 }

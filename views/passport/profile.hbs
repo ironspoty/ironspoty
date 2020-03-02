@@ -3,7 +3,7 @@
         <article class="card card--male card--profile">
             <div class="card__img-wrapper">
                 <div>
-                    <img class="card__img" src="{{ user.avatar }}" width="150" alt="">
+                    <img class="card__img" src="{{ userData.avatar }}" width="150" alt="">
                 </div>
                 {{!-- <div class="no-avatar">
                     <span>JW</span>
@@ -13,26 +13,26 @@
                 </span>
             </div>
             <div class="card__info">
-                <h2 class="card__info__title">{{ user.fullname }}</h2>
+                <h2 class="card__info__title">{{ userData.fullname }}</h2>
                 <section class="card__info__text">
                     <h3 class="card__info__small-title">Favourite genres</h3>
                     <div class="tag-wrapper">
-                        {{#each user.favoriteGenres}}
+                        {{#each userData.favoriteGenres}}
                         <span class="tag">{{this.name}}</span>
                         {{/each}}
                     </div>
                 </section>
                 <section class="card__info__currently-playing">
-                    {{#if user.currentlyPlaying}}
+                    {{#if userData.currentlyPlaying}}
                     <span class="badge badge--music">
                         <i class="icon icon-music"></i>
                     </span>
                     <div>
-                        <h3 class="card__info__subtitle truncate-text">{{user.currentlyPlaying.artists}}</h3>
-                        <h2 class="card__info__title truncate-text">{{user.currentlyPlaying.name}}</h2>
+                        <h3 class="card__info__subtitle truncate-text">{{userData.currentlyPlaying.artists}}</h3>
+                        <h2 class="card__info__title truncate-text">{{userData.currentlyPlaying.name}}</h2>
                     </div>
                     {{/if}}
-                    {{#unless user.currentlyPlaying}}
+                    {{#unless userData.currentlyPlaying}}
                     <span class="badge badge--offline">
                         <i class="icon icon-music"></i>
                     </span>
@@ -42,13 +42,28 @@
                     <i class="icon icon-headphones"></i>
                     <h3 class="card__info__secondary-title">Recently Played</h3>
                     <ul class="unstyled-list">
-                        {{#each user.recentlyPlayed}}
+                        {{#each userData.recentlyPlayed}}
                         <li class="truncate-text">{{this.name}}</li>
                         {{/each}}
                     </ul>
                 </section>
             </div>
         </article>
+    </section>
+
+    <section class="profile-charts">
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Danceability Chart</h3>
+            <canvas id="danceabilityChart" class="chart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Energy Chart</h3>
+            <canvas id="energyChart" class="chart"></canvas>
+        </div>
+        <div class="chart-wrapper">
+            <h3 class="chart-title">Tempo Chart</h3>
+            <canvas id="tempoChart" class="chart"></canvas>
+        </div>
     </section>
 
     {{!-- <section class="my-activities">
@@ -102,3 +117,119 @@
         </article>
     </section> --}}
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+
+    axios.get(`/chartData?id={{userData.id}}`).then(values => {
+
+        // arrayTracks.forEach((e) => console.log("This is the id of song", e.track.id))
+
+        console.log("Array de 3 dimensiones con danceability, energy y tempo ", values.data.data)
+        let data = values.data.data;
+        let dataDance = values.data.data[0].reverse();
+        let dataEnergy = values.data.data[1].reverse();
+        let dataTempo = values.data.data[2].reverse();
+        let long = data[0].length; //Cogemos la longitud del primer elemento del array
+
+        console.log("Esta es la longitud", long)
+
+        let arr = [],
+            x = long;
+
+        for (let i = 0; i < x; i++) {
+            arr.push(" ");
+        }
+
+        console.log("Array con eje x", arr)
+
+        const ctx = document.getElementById('danceabilityChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: arr,
+                datasets: [{
+                    label: '💃',
+                    data: dataDance,
+                    backgroundColor: [
+                        'rgba(255, 159, 64, 0.8)'
+                    ],
+
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('energyChart').getContext('2d');
+        const myChart2 = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: arr,
+                datasets: [{
+                    label: '⚡️',
+                    data: dataEnergy,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)'
+                    ],
+
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+
+        const ctx3 = document.getElementById('tempoChart').getContext('2d');
+        const myChart3 = new Chart(ctx3, {
+            type: 'line',
+            data: {
+                labels: arr,
+                datasets: [{
+                    label: '🥁',
+                    fontColor: 'rgba(54, 162, 235)',
+                    data: dataTempo,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.8)'
+                    ],
+
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    })
+</script>

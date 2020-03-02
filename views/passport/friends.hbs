@@ -1,17 +1,19 @@
-<div class="card-wrapper">
+<div class="friends-card-wrapper">
     {{#each friends}}
     <article class="card card--friend card--{{this.gender}}">
         <div class="card__img-wrapper">
-            {{#unless this.avatar}}
-            <div class="no-avatar">
-                <span>{{this.initials}}</span>
-            </div>
-            {{/unless}}
-            {{#if this.avatar}}
-            <div>
-                <img class="card__img" src="{{this.avatar}}" width="150" alt="">
-            </div>
-            {{/if}}
+            <a href="/profile/{{this._id}}">
+                {{#unless this.avatar}}
+                <div class="no-avatar">
+                    <span>{{this.initials}}</span>
+                </div>
+                {{/unless}}
+                {{#if this.avatar}}
+                <div>
+                    <img class="card__img" src="{{this.avatar}}" width="150" alt="">
+                </div>
+                {{/if}}
+            </a>
             <span class="badge badge--music">
                 <i class="icon icon-music"></i>
             </span>
@@ -30,7 +32,7 @@
         <div class="card__footer">
             <div class="card__footer__button">
                 <a href="/unmatch/{{this._id}}">Unmatch</a>
-                <a href="/user-profile/{{this._id}}">View Profile</a>
+                <a href="/profile/{{this._id}}">View Profile</a>
             </div>
         </div>
     </article>
