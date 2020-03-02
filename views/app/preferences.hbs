@@ -1,0 +1,38 @@
+{{#if message}}
+<div class="error-message">{{ message }}</div>
+{{/if}}
+
+<div class="preferences">
+    <div class="preferences__options">
+        <span>Personal information</span>
+        <a href="/preferences-user-info">User information</a>
+    </div>
+    <form class="preferences__form" action="/update-user-personal" method="POST">
+        <div class="preferences__header">
+            <h2 class="preferences__title">Personal information</h2>
+            <input class="btn btn--primary btn--preferences-save" type="submit" value="Save">
+        </div>
+
+        <div class="preferences__body">
+            <div class="input-wrapper">
+                <label class="input-wrapper__label" for="name">Name:</label>
+                <div class="input-wrapper__input">
+                    <input class="input-text" type="text" name="name" value={{user.name}}>
+                </div>
+            </div>
+            <div class="input-wrapper">
+                <label class="input-wrapper__label" for="lastname">Lastname:</label>
+                <div class="input-wrapper__input">
+                    <input class="input-text" type="text" name="lastname" value={{user.lastname}}>
+                </div>
+            </div>
+
+            <div class="input-wrapper">
+                <label class="input-wrapper__label" for="email">Email:</label>
+                <div class="input-wrapper__input">
+                    <input class="input-text" type="text" name="email" value={{user.email}}>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
