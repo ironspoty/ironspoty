@@ -1,9 +1,8 @@
 require('dotenv').config();
 
-const { isLoggedIn, isLoggedOut } = require('../lib');
+const { isLoggedIn, isLoggedOut, getSpotityToken } = require('../lib');
 const querystring = require('querystring');
 const axios = require('axios');
-
 const express = require("express");
 const passportRouter = express.Router();
 const ensureLogin = require("connect-ensure-login");
@@ -98,7 +97,9 @@ passportRouter.get("/friends", async (req, res, next) => {
         .populate('friends');
 
     let friends = user[0].friends.map(friend => {
-        friend.currentlyPlaying.artists = friend.currentlyPlaying.artists.map(artist => artist.name).join(', ');
+        friend.currentlyPlaying.artists = typeof friend.currentlyPlaying.artists === 'object' ?
+            friend.currentlyPlaying.artists.map(artist => artist.name).join(', ') :
+            friend.currentlyPlaying.artists
         friend.recentlyPlayed = friend.recentlyPlayed.slice(0, 3);
         return friend;
     })
@@ -106,63 +107,22 @@ passportRouter.get("/friends", async (req, res, next) => {
     res.render('passport/friends', { friends })
 });
 
-passportRouter.get("/map2", (req, res, next) => {
-    res.render("passport/map2");
-});
-
 passportRouter.get("/map", async (req, res, next) => {
-    const users = await User.find({})
-    const seedsInfo = [[], [], [], [], []]
-    const coordinates = [
-        [-3.6806426, 40.4641763],
-        [-3.6775118, 40.4181685],
-        [-3.7287666, 40.4702098],
-        [-3.692049, 40.4658571],
-        [-3.6824795, 40.4219631],
-        [-3.6974001, 40.4524187],
-        [-3.6392159, 40.4631333],
-        [-3.7057999, 40.4518661],
-        [-3.7083202, 40.423093],
-        [-3.6867364, 40.4601224],
-        [-3.6949302, 40.4010216],
-        [-3.6924296, 40.4251223],
-        [-3.7159634, 40.4390676],
-        [-3.726689, 40.427977],
-        [-3.7304776, 40.4613439],
-        [-3.7150402, 40.4103102],
-        [-3.6851124, 40.4456899],
-        [-3.6754097, 40.4569816],
-        [-3.6700987, 40.44825],
-        [-3.7009534, 40.4348648],
-        [-3.6848242, 40.4327656],
-        [-3.6713801, 40.4278899],
-        [-3.6337514, 40.4423879],
-        [-3.6963938, 40.4360524],
-        [-3.7939977, 40.4591683],
-        [-3.7062432, 40.4947343]
-    ]
+    const users = await User.find({});
+    const usersData = users.map(user => {
+        return {
+            "fullname": user.fullname,
+            "initials": user.initials,
+            "gender": user.gender,
+            "age": user.dob.age,
+            "avatar": user.avatar,
+            "favoriteGenres": user.favoriteGenres,
+            "coordinates": [user.coordinates.longitude, user.coordinates.latitude]
+        }
+    })
 
-    users.forEach((e) => seedsInfo[0].push(e.name))
-    users.forEach((e) => seedsInfo[1].push(e.gender))
-    users.forEach((e) => seedsInfo[2].push(e.dob.age))
-    users.forEach((e) => seedsInfo[3].push(e.avatar))
-
-    //Delete last element of Array. User by defect
-    seedsInfo.forEach((e) => e.pop())
-    coordinates.forEach((e) => seedsInfo[4].push(e))
-
-
-
-    console.log("Array POPEADOOOOOOOOOO y con COOOOOORDENADAS", seedsInfo)
-
-    res.render("passport/map", { seedsInfo });
-
+    res.render("passport/map", { usersDataJSON: JSON.stringify(usersData), usersData: usersData });
 });
-
-passportRouter.get("/user-profile", (req, res, next) => {
-    res.render("passport/user-profile");
-});
-
 
 
 //Post
@@ -223,10 +183,8 @@ passportRouter.post("/login", passport.authenticate("local", {
 //LOG OUT
 passportRouter.get("/logout", isLoggedIn(), (req, res, next) => {
     req.logout();
-    res.redirect("/");
+    res.redirect("/login");
 });
-
-
 
 //SPOTIFY
 passportRouter.get("/spotify", ensureLogin.ensureLoggedIn(), (req, res) => {
@@ -242,150 +200,43 @@ passportRouter.get("/spotify", ensureLogin.ensureLoggedIn(), (req, res) => {
         '&redirect_uri=' + encodeURIComponent(redirect_uri));
 });
 
-// passportRouter.get("/callback", ensureLogin.ensureLoggedIn(), (req, res) => {
-//     axios({
-//         method: 'post',
-//         url: 'https://accounts.spotify.com/api/token',
-//         headers: {
-//             'Authorization': 'Basic ' + new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64'),
-//             'Content-Type': 'application/x-www-form-urlencoded'
-//         },
-//         data: querystring.stringify({
-//             grant_type: GRANT_TYPE,
-//             code: req.query.code,
-//             redirect_uri: REDIRECT_URI
-//         }),
-//         responseType: 'json'
-//     }).then(response => {
-//         spotyAccessToken = response.data.access_token;
+passportRouter.get("/callback", ensureLogin.ensureLoggedIn(), async (req, res) => {
 
-//         axios({
-//             method: 'post',
-//             url: 'https://accounts.spotify.com/api/token',
-//             headers: {
-//                 'Authorization': 'Basic ' + new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64'),
-//                 'Content-Type': 'application/x-www-form-urlencoded'
-//             },
-//             data: querystring.stringify({
-//                 grant_type: GRANT_TYPE,
-//                 code: req.query.code,
-//                 redirect_uri: REDIRECT_URI
-//             }),
-//             responseType: 'json'
-//         }).then((response) => {
-//             spotyAccessToken = response.data.access_token;
-
-//             axios({
-//                 method: 'get',
-//                 url: `https://api.spotify.com/v1/me`,
-//                 headers: { 'Authorization': `Bearer ${spotyAccessToken}` }
-//             }).then(async (response) => {
-
-//                 await User.findByIdAndUpdate(req.user._id, {
-//                     avatar: response.data.images[0].url,
-//                     userSpotifyData: response.data
-//                 });
-
-//                 axios({
-//                     method: 'get',
-//                     url: `https://api.spotify.com/v1/me/player/recently-played?limit=10`,
-//                     headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
-//                     transformResponse: [(data) => {
-//                         let transformedData = JSON.parse(data);
-
-//                         return transformedData.items.map(item => {
-//                             return {
-//                                 "name": item.track.name,
-//                                 "popularity": item.track.popularity,
-//                                 "artists": item.track.artists.map(artist => artist.name).join(', '),
-//                                 "played_at": item.played_at,
-//                                 "duration_ms": item.track.duration_ms,
-//                                 "spotifyUrl": item.track.external_urls.spotify,
-//                                 "spotifyId": item.track.id
-//                             }
-//                         })
-//                     }],
-//                 }).then(async (response) => {
-//                     await User.findByIdAndUpdate(req.user._id, {
-//                         recentlyPlayed: response.data
-//                     });
-
-//                     axios({
-//                         method: 'get',
-//                         url: `https://api.spotify.com/v1/me/player/currently-playing`,
-//                         headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
-//                         transformResponse: [(data) => {
-//                             let transformedData = JSON.parse(data);
-
-//                             return {
-//                                 "name": transformedData.item.name,
-//                                 "popularity": transformedData.item.popularity,
-//                                 "artists": transformedData.item.artists.map(artist => artist.name).join(', '),
-//                                 "played_at": transformedData.item.played_at,
-//                                 "duration_ms": transformedData.item.duration_ms,
-//                                 "spotifyUrl": transformedData.item.external_urls.spotify,
-//                                 "spotifyId": transformedData.item.id
-//                             }
-//                         }]
-//                     }).then(async (response) => {
-//                         await User.findByIdAndUpdate(req.user._id, {
-//                             currentlyPlaying: response.data
-//                         });
-//                         res.redirect("/user-profile");
-//                     })
-//                 })
-//             })
-//         }).catch(e => {
-//             console.log(`
-//             =======================================
-//             ===============  ERROR  ===============
-//             ${e}
-//             =======================================`);
-//             return e;
-//         })
-//     });
-// });
-
-passportRouter.get("/callback", ensureLogin.ensureLoggedIn(), (req, res) => {
-    axios({
+    const spotifyToken = await axios({
         method: 'post',
         url: 'https://accounts.spotify.com/api/token',
         headers: {
             'Authorization': 'Basic ' + new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64'),
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        data: querystring.stringify({
-            grant_type: GRANT_TYPE,
-            code: req.query.code,
-            redirect_uri: REDIRECT_URI
-        }),
+        data: querystring.stringify({ grant_type: GRANT_TYPE, code: req.query.code, redirect_uri: REDIRECT_URI }),
         responseType: 'json'
-    }).then(response => {
-        spotyAccessToken = response.data.access_token;
-        axios({
-            method: 'get',
-            url: `https://api.spotify.com/v1/me`,
-            headers: { 'Authorization': `Bearer ${spotyAccessToken}` }
-        }).then(async (response) => {
-            await User.findByIdAndUpdate(req.user._id, {
-                userSpotifyData: response.data
-            });
-            res.redirect('/user-profile');
-        })
-    }).catch(e => {
-        console.log(`
-            =======================================
-            ===============  ERROR  ===============
-            ${e}
-            =======================================`);
-        return e;
-    })
+    });
+
+    spotyAccessToken = spotifyToken.data.access_token;
+
+    const spotifyUserData = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/me`,
+        headers: { 'Authorization': `Bearer ${spotyAccessToken}` }
+    });
+
+    await User.findByIdAndUpdate(req.user._id, {
+        userSpotifyData: spotifyUserData.data,
+        avatar: spotifyUserData.data.images[0].url
+    });
+
+    res.redirect('/profile');
 });
 
 
-passportRouter.get("/user-profile", ensureLogin.ensureLoggedIn(), (req, res, next) => {
-    axios({
-        method: 'get',
+passportRouter.get("/profile", ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+
+    if (!spotyAccessToken) {
+        res.redirect('/logout');
+    }
+
+    const recentlyPlayed = await axios({
         url: `https://api.spotify.com/v1/me/player/recently-played?limit=10`,
         headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
         transformResponse: [(data) => {
@@ -403,16 +254,15 @@ passportRouter.get("/user-profile", ensureLogin.ensureLoggedIn(), (req, res, nex
                 }
             })
         }],
-    }).then(async (response) => {
-        await User.findByIdAndUpdate(req.user._id, {
-            recentlyPlayed: response.data
-        });
+    })
 
-        return axios({
-            method: 'get',
-            url: `https://api.spotify.com/v1/me/player/currently-playing`,
-            headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
-            transformResponse: [(data) => {
+    const currentlyPlaying = await axios({
+        method: 'get',
+        url: `https://api.spotify.com/v1/me/player/currently-playing`,
+        headers: { 'Authorization': `Bearer ${spotyAccessToken}` },
+        transformResponse: [(data) => {
+            if (data) {
+
                 let transformedData = JSON.parse(data);
 
                 return {
@@ -424,14 +274,17 @@ passportRouter.get("/user-profile", ensureLogin.ensureLoggedIn(), (req, res, nex
                     "spotifyUrl": transformedData.item.external_urls.spotify,
                     "spotifyId": transformedData.item.id
                 }
-            }]
-        }).then(async (response) => {
-            await User.findByIdAndUpdate(req.user._id, {
-                currentlyPlaying: response.data
-            });
-            res.render("passport/user-profile", { user: req.user });
-        })
+            }
+        }]
     })
+
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, {
+        recentlyPlayed: recentlyPlayed.data,
+        currentlyPlaying: currentlyPlaying.data
+    });
+
+    res.render("passport/profile", { user: updatedUser });
+
 });
 
 passportRouter.get('/user', ensureLogin.ensureLoggedIn(), (req, res, next) => {
@@ -552,13 +405,13 @@ passportRouter.post('/search', (req, res, next) => {
     })
 })
 
-passportRouter.get('/user-profile/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
+passportRouter.get('/profile/:id', ensureLogin.ensureLoggedIn(), async (req, res, next) => {
     const { id } = req.params;
     const user = await User.findById(id);
 
     user.currentlyPlaying.artists = user.currentlyPlaying.artists.map(artist => artist.name).join(', ');
 
-    res.render("passport/user-profile", { user });
+    res.render("passport/profile", { user });
 })
 
 module.exports = passportRouter;

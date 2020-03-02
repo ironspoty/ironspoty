@@ -333,5 +333,20 @@
             padding: 0 25px;
         }
     }
+
+    //
+    //  Mapbox Card
+    // -----------------------------
+    &--map-bubble {
+        background: transparent;
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        margin-bottom: 0;
+
+        .card__img-wrapper {
+            margin: 0;
+        }
+    }
 }
 
