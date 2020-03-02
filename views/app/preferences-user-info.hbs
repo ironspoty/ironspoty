@@ -1,0 +1,31 @@
+{{#if message}}
+<div class="error-message">{{ message }}</div>
+{{/if}}
+
+<div class="preferences">
+    <div class="preferences__options">
+        <a href="/preferences">Personal information</a>
+        <span>User information</span>
+    </div>
+    <form class="preferences__form" action="/update-user-info" method="POST">
+        <div class="preferences__header">
+            <h2 class="preferences__title">User information</h2>
+            <input class="btn btn--primary btn--preferences-save" type="submit" value="Save">
+        </div>
+
+        <div class="preferences__body">
+            <div class="input-wrapper">
+                <label class="input-wrapper__label" for="password">Password:</label>
+                <div class="input-wrapper__input">
+                    <input class="input-text" type="password" name="password">
+                </div>
+            </div>
+            <div class="input-wrapper">
+                <label class="input-wrapper__label" for="password">Password confirmation:</label>
+                <div class="input-wrapper__input">
+                    <input class="input-text" type="password" name="password_confirm">
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

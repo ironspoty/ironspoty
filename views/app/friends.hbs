@@ -1,4 +1,7 @@
 <div class="friends-card-wrapper">
+    <div class="section-header">
+        <h2 class="section-header__title">Friends</h2>
+    </div>
     {{#each friends}}
     <article class="card card--friend card--{{this.gender}}">
         <div class="card__img-wrapper">
@@ -31,7 +34,7 @@
         </div>
         <div class="card__footer">
             <div class="card__footer__button">
-                <a href="/unmatch/{{this._id}}">Unmatch</a>
+                <a href="/unfriend/{{this._id}}">Unfriend</a>
                 <a href="/profile/{{this._id}}">View Profile</a>
             </div>
         </div>
