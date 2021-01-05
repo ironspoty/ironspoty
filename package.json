@@ -13,7 +13,7 @@
         "seed-all": "node bin/seeds/genres.js && node bin/seeds/users.js && node bin/seeds/tracks.js"
     },
     "dependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "bcrypt": "^3.0.8",
         "body-parser": "^1.18.3",
         "connect-ensure-login": "^0.1.1",
